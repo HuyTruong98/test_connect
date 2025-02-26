@@ -3,13 +3,18 @@ import NotFoundPage from '../../pages/error/404';
 import { authRoutes } from './auth';
 import { dashboardRoutes } from './dashboard';
 import PrivateRoute from '../../auth/privateRouter';
+import { STORAGE_KEY } from '../../auth/constants';
 
 export function Router() {
+  const token = localStorage.getItem(STORAGE_KEY);
+
+  const defaultRoute = token ? '/dashboard' : '/auth/jwt/sign-in';
+
   return useRoutes([
     ...authRoutes,
     {
       path: '/',
-      element: <Navigate to='/dashboard' replace />
+      element: <Navigate to={defaultRoute} replace />
     },
     {
       path: 'dashboard/*',
