@@ -1,6 +1,7 @@
+import './global.css';
+
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import React from 'react';
-import './App.css';
 import { BrowserRouter } from 'react-router-dom';
 import { Router } from './routers/sections';
 import { HelmetProvider } from 'react-helmet-async';
