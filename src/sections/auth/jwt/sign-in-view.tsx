@@ -5,6 +5,7 @@ import { z as zod } from 'zod';
 import { Field, Form } from '../../../components/hook-form';
 import { Label } from '../../../components/label';
 import { CustomTypography, LogoBox, StyledBox, StyledGridContainer, StyledLoadingButton } from './styles';
+import { signInWithPassword } from '../../../auth/action';
 
 export type SignInSchemaType = zod.infer<typeof SignInSchema>;
 
@@ -36,7 +37,8 @@ export function SignInView() {
   } = methods;
 
   const onSubmit = handleSubmit(async (data) => {
-    console.log(data);
+    await signInWithPassword({ email: data.email, password: data.password });
+    // router.refresh();
   });
   return (
     <StyledGridContainer container>

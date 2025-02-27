@@ -4,8 +4,14 @@ export const GradientInput = styled(TextField)(() => ({
   '& .MuiOutlinedInput-root': {
     borderRadius: '8px',
     background: 'white',
-    height: '40px',
-    borderColor: '#404040',
-    border: '1px solid #404040'
+    height: '40px'
+  },
+  '& .MuiOutlinedInput-notchedOutline': {
+    borderColor: '#404040'
+  },
+  '& .MuiInputBase-input': {
+    '&:focus': {
+      boxShadow: 'none'
+    }
   }
 }));

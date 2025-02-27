@@ -1,7 +1,7 @@
 import './global.css';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import React from 'react';
+import React, { Suspense } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { Router } from './routers/sections';
 import { HelmetProvider } from 'react-helmet-async';
@@ -15,7 +15,9 @@ function App() {
       <HelmetProvider>
         <AuthProvider>
           <BrowserRouter>
-            <Router />
+            <Suspense>
+              <Router />
+            </Suspense>
           </BrowserRouter>
         </AuthProvider>
       </HelmetProvider>

@@ -2,8 +2,7 @@ import { lazy, Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
 
 const Jwt = {
-  SignInPage: lazy(() => import('../../pages/auth/jwt/sign-in')),
-  SignUpPage: lazy(() => import('../../pages/auth/jwt/sign-up'))
+  SignInPage: lazy(() => import('../../pages/auth/jwt/sign-in'))
 };
 
 const authJwt = {
@@ -12,10 +11,6 @@ const authJwt = {
     {
       path: 'sign-in',
       element: <Jwt.SignInPage />
-    },
-    {
-      path: 'sign-up',
-      element: <Jwt.SignUpPage />
     }
   ]
 };
