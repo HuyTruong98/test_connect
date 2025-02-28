@@ -1,5 +1,4 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
-import { setLocal } from '../../utils/utils';
 import { STORAGE_KEY } from './constants';
 
 interface AuthContextType {
@@ -29,7 +28,7 @@ function AuthProvider({ children }: AuthProviderProps) {
 
   function login(token: string) {
     setIsLoggedIn(true);
-    setLocal(token);
+    localStorage.setItem(STORAGE_KEY, token);
   }
 
   function logout() {

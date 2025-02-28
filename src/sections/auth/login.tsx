@@ -2,12 +2,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Box, Grid } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { z as zod } from 'zod';
+import { signInWithPassword } from '../../auth/context/action';
+import { useAuth } from '../../auth/context/authProvider';
 import { Field, Form } from '../../components/hook-form';
 import { Label } from '../../components/label';
-import { CustomTypography, LogoBox, StyledBox, StyledGridContainer, StyledLoadingButton } from './styles';
-import { signInWithPassword } from '../../auth/context/action';
 import { useRouter } from '../../routers/hooks';
-import { useAuth } from '../../auth/context/authProvider';
+import { CustomTypography, LogoBox, StyledBox, StyledGridContainer, StyledLoadingButton } from './styles';
 
 export type SignInSchemaType = zod.infer<typeof SignInSchema>;
 
@@ -44,7 +44,7 @@ export function LoginView() {
     const token = await signInWithPassword({ email: data.email, password: data.password });
     if (token) {
       login(token);
-      router.replace('/dashboard');
+      router.refresh();
     }
   });
   return (

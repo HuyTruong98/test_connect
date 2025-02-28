@@ -1,6 +1,6 @@
 // ----------------------------------------------------------------------
 
-const ROOTS = {
+export const ROOTS = {
   AUTH: '/auth',
   DASHBOARD: '/dashboard'
 };
@@ -10,9 +10,7 @@ const ROOTS = {
 export const paths = {
   // AUTH
   auth: {
-    jwt: {
-      signIn: `${ROOTS.AUTH}/jwt/sign-in`
-    }
+    login: `${ROOTS.AUTH}/login`
   },
 
   // DASHBOARD

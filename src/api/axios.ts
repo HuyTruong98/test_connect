@@ -2,6 +2,10 @@ import type { AxiosRequestConfig } from 'axios';
 
 import axios from 'axios';
 import { HOST_API } from '../utils/config-global';
+import { STORAGE_KEY } from '../auth/context/constants';
+import { paths } from '../routers/paths';
+
+const getToken = () => localStorage.getItem(STORAGE_KEY);
 
 // ----------------------------------------------------------------------
 
@@ -12,9 +16,28 @@ const axiosInstance = axios.create({
   }
 });
 
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const token = getToken();
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
 axiosInstance.interceptors.response.use(
   (response) => response,
-  (error) => Promise.reject((error.response && error.response.data) || 'Something went wrong!')
+  (error) => {
+    if (error.response?.status === 401) {
+      console.warn('Token expired or unauthorized! Logging out...');
+      localStorage.removeItem(STORAGE_KEY);
+      delete axiosInstance.defaults.headers.common.Authorization;
+      window.location.href = paths.auth.login;
+    }
+    return Promise.reject(error);
+  }
 );
 
 export default axiosInstance;
