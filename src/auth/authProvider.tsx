@@ -1,35 +1,58 @@
-import React, { createContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
+import { setLocal } from '../utils/utils';
 import { STORAGE_KEY } from './constants';
 
 interface AuthContextType {
-  isAuthenticated: boolean;
+  isLoggedIn: boolean;
+  isLoading: boolean;
   login: (token: string) => void;
   logout: () => void;
 }
 
-export const AuthContext = createContext<AuthContextType | null>(null);
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 interface AuthProviderProps {
   children: ReactNode;
 }
 
-export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+function AuthProvider({ children }: AuthProviderProps) {
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const token = localStorage.getItem(STORAGE_KEY);
-    setIsAuthenticated(!!token);
+    const storedJwt = localStorage.getItem(STORAGE_KEY);
+    if (storedJwt) {
+      setIsLoggedIn(true);
+    }
+    setIsLoading(false);
   }, []);
 
-  const login = (token: string) => {
-    localStorage.setItem(STORAGE_KEY, token);
-    setIsAuthenticated(true);
-  };
+  function login(token: string) {
+    setIsLoggedIn(true);
+    setLocal(token);
+  }
 
-  const logout = () => {
+  function logout() {
+    setIsLoggedIn(false);
     localStorage.removeItem(STORAGE_KEY);
-    setIsAuthenticated(false);
+  }
+
+  const authValue: AuthContextType = {
+    isLoggedIn,
+    isLoading,
+    login,
+    logout
   };
 
-  return <AuthContext.Provider value={{ isAuthenticated, login, logout }}>{children}</AuthContext.Provider>;
-};
+  return <AuthContext.Provider value={authValue}>{children}</AuthContext.Provider>;
+}
+
+function useAuth() {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+}
+
+export { AuthProvider, useAuth };

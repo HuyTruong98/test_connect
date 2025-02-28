@@ -1,16 +1,13 @@
 import { lazy, Suspense } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, Navigate } from 'react-router-dom';
 
-const Dashboard = {
-  MainPage: lazy(() => import('../../pages/dashboard/dashboard'))
-};
-
-const dashboard = {
-  path: '',
-  element: <Dashboard.MainPage />
-};
+const DashboardMain = lazy(() => import('../../pages/dashboard/dashboard'));
 
 export const dashboardRoutes = [
+  {
+    path: '/',
+    element: <Navigate to='/dashboard' replace />
+  },
   {
     path: 'dashboard',
     element: (
@@ -18,6 +15,11 @@ export const dashboardRoutes = [
         <Outlet />
       </Suspense>
     ),
-    children: [dashboard]
+    children: [
+      {
+        path: '',
+        element: <DashboardMain />
+      }
+    ]
   }
 ];

@@ -1,25 +1,12 @@
-import React, { JSX, useContext } from 'react';
 import { Navigate } from 'react-router-dom';
-import { AuthContext } from './authProvider';
+import { useAuth } from './authProvider';
 
 interface PrivateRouteProps {
-  children: JSX.Element;
+  children: React.ReactNode;
 }
 
-const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
-  const authContext = useContext(AuthContext);
+export const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
+  const { isLoggedIn } = useAuth();
 
-  if (!authContext) {
-    return null;
-  }
-
-  const { isAuthenticated } = authContext;
-
-  if (!isAuthenticated) {
-    return <Navigate to='/login' replace />;
-  }
-
-  return children;
+  return isLoggedIn ? <>{children}</> : <Navigate to='/auth/jwt/sign-in' replace />;
 };
-
-export default PrivateRoute;

@@ -1,5 +1,4 @@
 import axios, { endpoints } from '../api/axios';
-import { setLocal } from '../utils/utils';
 
 // ----------------------------------------------------------------------
 
@@ -18,7 +17,7 @@ export type SignUpParams = {
 /** **************************************
  * Sign in
  *************************************** */
-export const signInWithPassword = async ({ email, password }: SignInParams): Promise<void> => {
+export const signInWithPassword = async ({ email, password }: SignInParams) => {
   try {
     const params = { email, password };
 
@@ -30,7 +29,7 @@ export const signInWithPassword = async ({ email, password }: SignInParams): Pro
       throw new Error('Access token not found in response');
     }
 
-    setLocal(accessToken);
+    return accessToken;
   } catch (error) {
     console.error('Error during sign in:', error);
     throw error;

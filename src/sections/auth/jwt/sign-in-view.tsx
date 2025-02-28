@@ -6,6 +6,8 @@ import { Field, Form } from '../../../components/hook-form';
 import { Label } from '../../../components/label';
 import { CustomTypography, LogoBox, StyledBox, StyledGridContainer, StyledLoadingButton } from './styles';
 import { signInWithPassword } from '../../../auth/action';
+import { useRouter } from '../../../routers/hooks';
+import { useAuth } from '../../../auth/authProvider';
 
 export type SignInSchemaType = zod.infer<typeof SignInSchema>;
 
@@ -26,6 +28,8 @@ const defaultValues = {
 };
 
 export function SignInView() {
+  const { login } = useAuth();
+  const router = useRouter();
   const methods = useForm<SignInSchemaType>({
     resolver: zodResolver(SignInSchema),
     defaultValues
@@ -37,8 +41,11 @@ export function SignInView() {
   } = methods;
 
   const onSubmit = handleSubmit(async (data) => {
-    await signInWithPassword({ email: data.email, password: data.password });
-    // router.refresh();
+    const token = await signInWithPassword({ email: data.email, password: data.password });
+    if (token) {
+      login(token);
+      router.replace('/dashboard');
+    }
   });
   return (
     <StyledGridContainer container>
