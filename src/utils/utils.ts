@@ -1,5 +1,5 @@
 import axios from '../api/axios';
-import { STORAGE_KEY } from '../auth/constants';
+import { STORAGE_KEY } from '../auth/context/constants';
 import { paths } from '../routers/paths';
 
 export function jwtDecode(token: string) {

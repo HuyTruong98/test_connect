@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
-import { setLocal } from '../utils/utils';
+import { setLocal } from '../../utils/utils';
 import { STORAGE_KEY } from './constants';
 
 interface AuthContextType {

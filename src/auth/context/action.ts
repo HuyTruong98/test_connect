@@ -1,4 +1,4 @@
-import axios, { endpoints } from '../api/axios';
+import axios, { endpoints } from '../../api/axios';
 
 // ----------------------------------------------------------------------
 

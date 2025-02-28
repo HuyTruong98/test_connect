@@ -5,7 +5,7 @@ import React, { Suspense } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { Router } from './routers/sections';
 import { HelmetProvider } from 'react-helmet-async';
-import { AuthProvider } from './auth/authProvider';
+import { AuthProvider } from './auth/context/authProvider';
 
 function App() {
   const theme = React.useMemo(() => createTheme({ palette: { mode: 'light' } }), []);

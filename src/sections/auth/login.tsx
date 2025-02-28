@@ -2,12 +2,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Box, Grid } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { z as zod } from 'zod';
-import { Field, Form } from '../../../components/hook-form';
-import { Label } from '../../../components/label';
+import { Field, Form } from '../../components/hook-form';
+import { Label } from '../../components/label';
 import { CustomTypography, LogoBox, StyledBox, StyledGridContainer, StyledLoadingButton } from './styles';
-import { signInWithPassword } from '../../../auth/action';
-import { useRouter } from '../../../routers/hooks';
-import { useAuth } from '../../../auth/authProvider';
+import { signInWithPassword } from '../../auth/context/action';
+import { useRouter } from '../../routers/hooks';
+import { useAuth } from '../../auth/context/authProvider';
 
 export type SignInSchemaType = zod.infer<typeof SignInSchema>;
 
@@ -27,7 +27,7 @@ const defaultValues = {
   password: ''
 };
 
-export function SignInView() {
+export function LoginView() {
   const { login } = useAuth();
   const router = useRouter();
   const methods = useForm<SignInSchemaType>({
