@@ -12,6 +12,9 @@ export const GradientInput = styled(TextField)(() => ({
   '& .MuiInputBase-input': {
     '&:focus': {
       boxShadow: 'none'
-    }
+    },
+    height: '40px',
+    padding: '10px 12px',
+    boxSizing: 'border-box'
   }
 }));

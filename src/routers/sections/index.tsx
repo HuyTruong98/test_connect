@@ -1,31 +1,18 @@
-import { Navigate, Outlet, useRoutes } from 'react-router-dom';
-import NotFoundPage from '../../pages/error/404';
+import { Navigate, useRoutes } from 'react-router-dom';
 import { authRoutes } from './auth';
 import { dashboardRoutes } from './dashboard';
-import PrivateRoute from '../../auth/privateRouter';
-import { STORAGE_KEY } from '../../auth/constants';
+import { CONFIG } from '../../utils/config-global';
 
 export function Router() {
-  const token = localStorage.getItem(STORAGE_KEY);
-
-  const defaultRoute = token ? '/dashboard' : '/auth/jwt/sign-in';
-
   return useRoutes([
-    ...authRoutes,
     {
       path: '/',
-      element: <Navigate to={defaultRoute} replace />
+      element: <Navigate to={CONFIG.auth.redirectPath} replace />
     },
-    {
-      path: 'dashboard/*',
-      element: (
-        <PrivateRoute>
-          <Outlet />
-        </PrivateRoute>
-      ),
-      children: dashboardRoutes
-    },
-    { path: '/404', element: <NotFoundPage /> },
+
+    ...authRoutes,
+    ...dashboardRoutes,
+
     { path: '*', element: <Navigate to='/404' replace /> }
   ]);
 }

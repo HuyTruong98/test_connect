@@ -1,5 +1,5 @@
-import axios, { endpoints } from '../api/axios';
-import { setLocal } from '../utils/utils';
+import axios, { endpoints } from '../../api/axios';
+import { setLocal } from '../../utils/utils';
 
 // ----------------------------------------------------------------------
 

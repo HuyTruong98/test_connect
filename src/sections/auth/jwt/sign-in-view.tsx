@@ -5,7 +5,7 @@ import { z as zod } from 'zod';
 import { Field, Form } from '../../../components/hook-form';
 import { Label } from '../../../components/label';
 import { CustomTypography, LogoBox, StyledBox, StyledGridContainer, StyledLoadingButton } from './styles';
-import { signInWithPassword } from '../../../auth/action';
+import { signInWithPassword } from '../../../auth/context/action';
 
 export type SignInSchemaType = zod.infer<typeof SignInSchema>;
 
