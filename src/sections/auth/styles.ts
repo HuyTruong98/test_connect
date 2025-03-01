@@ -1,5 +1,4 @@
 import { Box, Grid, styled, Typography } from '@mui/material';
-import LoadingButton from '@mui/lab/LoadingButton';
 
 export const StyledGridContainer = styled(Grid)({
   width: '100vw',
@@ -55,16 +54,4 @@ export const LogoBox = styled(Box)({
   justifyContent: 'center',
   width: '100%',
   maxWidth: '798px'
-});
-
-export const StyledLoadingButton = styled(LoadingButton)({
-  background:
-    'linear-gradient(to right, rgba(254, 146, 237, 1), rgba(179, 156, 246, 1), rgba(131, 163, 247, 1), rgba(8, 166, 254, 1))',
-  height: '48px',
-  borderRadius: '8px',
-  color: 'white',
-  '&:hover': {
-    background:
-      'linear-gradient(to right, rgba(254, 146, 237, 0.8), rgba(179, 156, 246, 0.8), rgba(131, 163, 247, 0.8), rgba(8, 166, 254, 0.8))'
-  }
 });

@@ -6,8 +6,9 @@ import { signInWithPassword } from '../../auth/context/action';
 import { useAuth } from '../../auth/context/authProvider';
 import { Field, Form } from '../../components/hook-form';
 import { Label } from '../../components/label';
+import { ButtonLoading } from '../../layout/core/loading-button';
 import { useRouter } from '../../routers/hooks';
-import { CustomTypography, LogoBox, StyledBox, StyledGridContainer, StyledLoadingButton } from './styles';
+import { CustomTypography, LogoBox, StyledBox, StyledGridContainer } from './styles';
 
 export type SignInSchemaType = zod.infer<typeof SignInSchema>;
 
@@ -62,7 +63,7 @@ export function LoginView() {
               <Label label='Password'>
                 <Field.Text name='password' type='password' InputLabelProps={{ shrink: true }} />
               </Label>
-              <StyledLoadingButton
+              <ButtonLoading
                 fullWidth
                 color='inherit'
                 size='large'
@@ -73,7 +74,7 @@ export function LoginView() {
                 sx={{ marginTop: '8px' }}
               >
                 Login
-              </StyledLoadingButton>
+              </ButtonLoading>
             </Box>
           </StyledBox>
         </Form>

@@ -1,5 +1,6 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/authProvider';
+import { paths } from '../../routers/paths';
 
 interface PrivateRouteProps {
   children: React.ReactNode;
@@ -7,7 +8,11 @@ interface PrivateRouteProps {
 
 export const AuthGuard: React.FC<PrivateRouteProps> = ({ children }) => {
   const location = useLocation();
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, isLoading } = useAuth();
 
-  return isLoggedIn ? <>{children}</> : <Navigate to='/auth/login' state={{ from: location }} replace />;
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  return isLoggedIn ? <>{children}</> : <Navigate to={paths.auth.login} state={{ from: location }} replace />;
 };

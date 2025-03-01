@@ -1,8 +1,13 @@
-import { useRoutes } from 'react-router-dom';
-import NotFoundPage from '../../pages/error/404';
+import { Navigate, useRoutes } from 'react-router-dom';
 import { authRoutes } from './auth';
-import { dashboardRoutes as rawDashboardRoutes } from './dashboard';
+import { dashboardRoutes } from './dashboard';
+import { mainRoutes } from './main.';
 
 export function Router() {
-  return useRoutes([...authRoutes, ...rawDashboardRoutes, { path: '*', element: <NotFoundPage /> }]);
+  return useRoutes([
+    ...authRoutes,
+    ...dashboardRoutes,
+    ...mainRoutes,
+    { path: '*', element: <Navigate to='/404' replace /> }
+  ]);
 }
