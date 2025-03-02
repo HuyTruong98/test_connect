@@ -1,11 +1,11 @@
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { AppBar, Avatar, Box, IconButton, Toolbar } from '@mui/material';
-import { useRouter } from '../../routers/hooks';
+import { AppBar, Avatar, Box, Button, IconButton, Toolbar } from '@mui/material';
+import { usePathname, useRouter } from '../../routers/hooks';
 import { ROOTS } from '../../routers/paths';
-import { ButtonBase } from './button';
 
 export function HeaderBase() {
   const router = useRouter();
+  const pathname = usePathname();
 
   return (
     <AppBar position='fixed' color='inherit' elevation={0} sx={{ zIndex: 1201 }}>
@@ -15,17 +15,26 @@ export function HeaderBase() {
 
         {/* Navigation */}
         <Box display='flex' gap='16px'>
-          <ButtonBase activePath={ROOTS.DASHBOARD} onClick={() => router.push(ROOTS.DASHBOARD)}>
+          <Button
+            variant={pathname === ROOTS.DASHBOARD ? 'contained' : 'text'}
+            onClick={() => router.push(ROOTS.DASHBOARD)}
+          >
             Dashboard
-          </ButtonBase>
+          </Button>
 
-          <ButtonBase activePath={ROOTS.ACCOUNT} onClick={() => router.push(ROOTS.ACCOUNT)}>
+          <Button
+            variant={pathname === ROOTS.ACCOUNT ? 'contained' : 'text'}
+            onClick={() => router.push(ROOTS.ACCOUNT)}
+          >
             Account Management
-          </ButtonBase>
+          </Button>
 
-          <ButtonBase activePath={ROOTS.PLAN_SETTING} onClick={() => router.push(ROOTS.PLAN_SETTING)}>
+          <Button
+            variant={pathname === ROOTS.PLAN_SETTING ? 'contained' : 'text'}
+            onClick={() => router.push(ROOTS.PLAN_SETTING)}
+          >
             Plan Settings
-          </ButtonBase>
+          </Button>
         </Box>
 
         {/* Icons */}

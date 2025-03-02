@@ -1,32 +1,52 @@
-import LoadingButton from '@mui/lab/LoadingButton';
-import { LoadingButtonProps } from '@mui/lab';
-import { SxProps, Theme } from '@mui/material';
+import { ButtonProps } from '@mui/material';
+import { Components, Theme } from '@mui/material/styles';
 
-interface CustomLoadingButtonProps extends LoadingButtonProps {
-  children: React.ReactNode;
-  sx?: SxProps<Theme>;
-}
+export function loadingButton(): Components<Omit<Theme, 'components'>> {
+  return {
+    MuiButton: {
+      styleOverrides: {
+        root: ({ ownerState }: { ownerState: ButtonProps }) => {
+          console.log('ownerState:', ownerState);
 
-export function ButtonLoading({ children, sx, ...props }: CustomLoadingButtonProps) {
-  return (
-    <LoadingButton
-      {...props}
-      sx={{
-        background:
-          'linear-gradient(to right, rgba(254, 146, 237, 1), rgba(179, 156, 246, 1), rgba(131, 163, 247, 1), rgba(8, 166, 254, 1))',
-        height: '48px',
-        borderRadius: '8px',
-        color: 'white',
-        textTransform: 'none',
-        fontWeight: 'bold',
-        '&:hover': {
-          background:
-            'linear-gradient(to right, rgba(254, 146, 237, 0.8), rgba(179, 156, 246, 0.8), rgba(131, 163, 247, 0.8), rgba(8, 166, 254, 0.8))'
-        },
-        ...sx
-      }}
-    >
-      {children}
-    </LoadingButton>
-  );
+          return {
+            ...(ownerState.className?.includes('loading-button') && {
+              background: 'linear-gradient(to right, #fe92ed, #b39cf6, #83a3f7, #08a6fe)',
+              height: '48px',
+              borderRadius: '8px',
+              color: 'white',
+              textTransform: 'none',
+              fontWeight: 400,
+              '&:hover': {
+                background: 'linear-gradient(to right, #fe92edcc, #b39cf6cc, #83a3f7cc, #08a6fecc)'
+              }
+            }),
+
+            ...(ownerState.variant === 'contained' && {
+              background: 'rgba(46, 47, 49, 1)',
+              color: 'rgba(255, 255, 255, 1)',
+              borderRadius: '999px',
+              height: '40px',
+              textTransform: 'none',
+              fontWeight: 400,
+              padding: '8px 16px',
+              lineHeight: '22px',
+              transition: 'background 0.3s'
+            }),
+
+            ...(ownerState.variant === 'text' && {
+              background: 'rgba(255, 255, 255, 1)',
+              color: 'rgba(46, 47, 49, 1)',
+              borderRadius: '999px',
+              height: '40px',
+              textTransform: 'none',
+              fontWeight: 400,
+              padding: '8px 16px',
+              lineHeight: '22px',
+              transition: 'background 0.3s'
+            })
+          };
+        }
+      }
+    }
+  };
 }

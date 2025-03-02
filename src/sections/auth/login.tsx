@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import LoadingButton from '@mui/lab/LoadingButton';
 import { Box, Grid } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { z as zod } from 'zod';
@@ -6,7 +7,6 @@ import { signInWithPassword } from '../../auth/context/action';
 import { useAuth } from '../../auth/context/authProvider';
 import { Field, Form } from '../../components/hook-form';
 import { Label } from '../../components/label';
-import { ButtonLoading } from '../../layout/core/loading-button';
 import { useRouter } from '../../routers/hooks';
 import { CustomTypography, LogoBox, StyledBox, StyledGridContainer } from './styles';
 
@@ -63,18 +63,18 @@ export function LoginView() {
               <Label label='Password'>
                 <Field.Text name='password' type='password' InputLabelProps={{ shrink: true }} />
               </Label>
-              <ButtonLoading
+              <LoadingButton
                 fullWidth
                 color='inherit'
                 size='large'
                 type='submit'
-                variant='contained'
                 loading={isSubmitting}
-                loadingIndicator='Sign in...'
+                loadingIndicator='Login...'
                 sx={{ marginTop: '8px' }}
+                className='loading-button'
               >
                 Login
-              </ButtonLoading>
+              </LoadingButton>
             </Box>
           </StyledBox>
         </Form>

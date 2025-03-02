@@ -1,17 +1,15 @@
 import './global.css';
 
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import React, { Suspense } from 'react';
-import { BrowserRouter } from 'react-router-dom';
-import { Router } from './routers/sections';
+import { Suspense } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
+import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from './auth/context/authProvider';
+import { Router } from './routers/sections';
+import { ThemeProvider } from './layout/theme-provider';
 
 function App() {
-  const theme = React.useMemo(() => createTheme({ palette: { mode: 'light' } }), []);
-
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider>
       <HelmetProvider>
         <AuthProvider>
           <BrowserRouter>
