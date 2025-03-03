@@ -6,7 +6,9 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
     <Box>
       <HeaderBase />
 
-      <Box sx={{ mt: '119px', px: 3 }}>{children}</Box>
+      <Box marginTop='100px' px='40px' paddingBottom='40px'>
+        {children}
+      </Box>
     </Box>
   );
 }

@@ -6,20 +6,20 @@ export function loadingButton(): Components<Omit<Theme, 'components'>> {
     MuiButton: {
       styleOverrides: {
         root: ({ ownerState }: { ownerState: ButtonProps }) => {
-          console.log('ownerState:', ownerState);
-
           return {
-            ...(ownerState.className?.includes('loading-button') && {
-              background: 'linear-gradient(to right, #fe92ed, #b39cf6, #83a3f7, #08a6fe)',
-              height: '48px',
-              borderRadius: '8px',
-              color: 'white',
-              textTransform: 'none',
-              fontWeight: 400,
-              '&:hover': {
-                background: 'linear-gradient(to right, #fe92edcc, #b39cf6cc, #83a3f7cc, #08a6fecc)'
-              }
-            }),
+            ...(ownerState.color === 'inherit' &&
+              ownerState.className?.includes('loading-button') &&
+              ownerState.variant === 'outlined' && {
+                background: 'linear-gradient(to right, #fe92ed, #b39cf6, #83a3f7, #08a6fe) !important',
+                height: '48px',
+                borderRadius: '8px',
+                color: 'white',
+                textTransform: 'none',
+                fontWeight: 400,
+                '&:hover': {
+                  background: 'linear-gradient(to right, #fe92edcc, #b39cf6cc, #83a3f7cc, #08a6fecc) !important'
+                }
+              }),
 
             ...(ownerState.variant === 'contained' && {
               background: 'rgba(46, 47, 49, 1)',

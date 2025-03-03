@@ -1,6 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import LoadingButton from '@mui/lab/LoadingButton';
-import { Box, Grid } from '@mui/material';
+import { Box, Button, Grid } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { z as zod } from 'zod';
 import { signInWithPassword } from '../../auth/context/action';
@@ -63,7 +62,7 @@ export function LoginView() {
               <Label label='Password'>
                 <Field.Text name='password' type='password' InputLabelProps={{ shrink: true }} />
               </Label>
-              <LoadingButton
+              <Button
                 fullWidth
                 color='inherit'
                 size='large'
@@ -72,9 +71,10 @@ export function LoginView() {
                 loadingIndicator='Login...'
                 sx={{ marginTop: '8px' }}
                 className='loading-button'
+                variant='outlined'
               >
                 Login
-              </LoadingButton>
+              </Button>
             </Box>
           </StyledBox>
         </Form>
