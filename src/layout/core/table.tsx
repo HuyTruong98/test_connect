@@ -9,7 +9,7 @@ export function table(): Components<Omit<Theme, 'components'>> {
           boxShadow: 'none',
           backgroundColor: '#EEEEEE',
           padding: '0px 24px 0px 24px',
-          maxHeight: '600px',
+          maxHeight: '781px',
           overflow: 'auto',
           borderBottomLeftRadius: '0px',
           borderBottomRightRadius: '0px'
@@ -20,15 +20,25 @@ export function table(): Components<Omit<Theme, 'components'>> {
       styleOverrides: {
         root: {
           borderCollapse: 'separate',
+          borderSpacing: '0 12px',
           '& thead': {
             position: 'sticky',
             top: 0,
             backgroundColor: '#EEEEEE',
-            zIndex: 2
+            zIndex: 2,
+
+            '& tr th': {
+              padding: '4px 16px 4px 16px !important'
+            }
           },
           '& tbody': {
-            '& tr td': {
-              borderBottom: '12px solid #EEEEEE'
+            '& tr td:first-of-type': {
+              borderTopLeftRadius: '8px',
+              borderBottomLeftRadius: '8px'
+            },
+            '& tr td:last-of-type': {
+              borderTopRightRadius: '8px',
+              borderBottomRightRadius: '8px'
             }
           }
         }
@@ -49,8 +59,7 @@ export function table(): Components<Omit<Theme, 'components'>> {
           backgroundColor: '#EEEEEE',
           fontWeight: 600,
           height: '30px',
-          paddingTop: '16px',
-          paddingBottom: '16px'
+          padding: '4px 16px 4px 16px !important'
         },
         body: {
           backgroundColor: '#fff',

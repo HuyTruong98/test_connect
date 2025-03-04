@@ -12,13 +12,13 @@ import {
   TableCell,
   TableContainer,
   TableHead,
-  TablePagination,
   TableRow,
   TextField,
   Typography
 } from '@mui/material';
 import { styled } from '@mui/system';
 import { useState } from 'react';
+import PaginationCommon from '../../components/pagination-common/pagination';
 
 const StatusChip = styled('span')<{ status: string }>(({ theme, status }) => ({
   display: 'inline-block',
@@ -213,7 +213,11 @@ export function DashboardView() {
               </InputAdornment>
             )
           }}
-          sx={{ marginRight: 2 }}
+          sx={{
+            marginRight: 2,
+            width: '416px',
+            borderRadius: '999px'
+          }}
         />
         <Button variant='outlined' startIcon={<FilterList />} sx={{ textTransform: 'none' }}>
           Filter
@@ -249,31 +253,14 @@ export function DashboardView() {
               </TableBody>
             </Table>
           </TableContainer>
-          <Box padding='0px 24px 0px 24px' bgcolor='#EEEEEE' height='40px'>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
-              component='div'
-              count={filteredData.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-              sx={{
-                // marginTop: 2,
-                height: '40px',
-                '.MuiTablePagination-toolbar': {
-                  justifyContent: 'space-between',
-                  height: '40px',
-                  minHeight: '0px',
-                  backgroundColor: '#FFF',
-                  px: '24px',
-                  borderBottomLeftRadius: '24px',
-                  borderBottomRightRadius: '24px'
-                  // marginTop: '16px',
-                }
-              }}
-            />
-          </Box>
+
+          <PaginationCommon
+            totalResults={234}
+            page={page}
+            rowsPerPage={rowsPerPage}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
         </Box>
         <Box flex={1} display='flex' flexDirection='column' gap={3}>
           <Card>
