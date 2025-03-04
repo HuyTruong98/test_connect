@@ -226,41 +226,47 @@ export function DashboardView() {
       <Box display='flex' gap={3}>
         <Box flex={3}>
           <TableContainer component={Paper}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Owner</TableCell>
-                  <TableCell>Email</TableCell>
-                  <TableCell>State</TableCell>
-                  <TableCell>Clinic</TableCell>
-                  <TableCell>Registration Date</TableCell>
-                  <TableCell>Plan</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {filteredData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
-                  <TableRow key={index}>
-                    <TableCell>{row.owner}</TableCell>
-                    <TableCell>{row.email}</TableCell>
-                    <TableCell>
-                      <StatusChip status={row.state}>{row.state}</StatusChip>
-                    </TableCell>
-                    <TableCell>{row.clinic}</TableCell>
-                    <TableCell>{row.registrationDate}</TableCell>
-                    <TableCell>{row.plan}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+            <Box maxHeight='716px' overflow='hidden' bgcolor='#EEEEE'>
+              <Box padding='0 40px'>
+                <Table stickyHeader className='header-table'>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Owner</TableCell>
+                      <TableCell>Email</TableCell>
+                      <TableCell>State</TableCell>
+                      <TableCell>Clinic</TableCell>
+                      <TableCell>Registration Date</TableCell>
+                      <TableCell>Plan</TableCell>
+                    </TableRow>
+                  </TableHead>
+                </Table>
+              </Box>
 
-          <PaginationCommon
+              <Box maxHeight='672px' overflow='auto' padding='0 24px'>
+                <Table className='body-table'>
+                  <TableBody>
+                    {filteredData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
+                      <TableRow key={index}>
+                        <TableCell>{row.owner}</TableCell>
+                        <TableCell>{row.email}</TableCell>
+                        <TableCell>{row.state}</TableCell>
+                        <TableCell>{row.clinic}</TableCell>
+                        <TableCell>{row.registrationDate}</TableCell>
+                        <TableCell>{row.plan}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </Box>
+            </Box>
+          </TableContainer>
+          {/* <PaginationCommon
             totalResults={234}
             page={page}
             rowsPerPage={rowsPerPage}
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
-          />
+          /> */}
         </Box>
         <Box flex={1} display='flex' flexDirection='column' gap={3}>
           <Card>

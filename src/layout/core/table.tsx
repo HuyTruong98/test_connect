@@ -7,64 +7,77 @@ export function table(): Components<Omit<Theme, 'components'>> {
         root: {
           borderRadius: '24px',
           boxShadow: 'none',
-          backgroundColor: '#EEEEEE',
-          padding: '0px 24px 0px 24px',
-          maxHeight: '781px',
-          overflow: 'auto',
-          borderBottomLeftRadius: '0px',
-          borderBottomRightRadius: '0px'
+          backgroundColor: '#EEEEEE'
         }
       }
     },
     MuiTable: {
       styleOverrides: {
-        root: {
-          borderCollapse: 'separate',
-          borderSpacing: '0 12px',
-          '& thead': {
-            position: 'sticky',
-            top: 0,
-            backgroundColor: '#EEEEEE',
-            zIndex: 2,
+        root: ({ ownerState }) => {
+          return {
+            ...(ownerState.className?.includes('header-table') && {
+              padding: '16px 0px 10px 0px',
 
-            '& tr th': {
-              padding: '4px 16px 4px 16px !important'
-            }
-          },
-          '& tbody': {
-            '& tr td:first-of-type': {
-              borderTopLeftRadius: '8px',
-              borderBottomLeftRadius: '8px'
-            },
-            '& tr td:last-of-type': {
-              borderTopRightRadius: '8px',
-              borderBottomRightRadius: '8px'
-            }
-          }
+              '& thead': {
+                '& tr': {
+                  padding: '0px 16px 0px 16px'
+                },
+                '& tr th': {
+                  height: '30px',
+                  padding: '0px',
+                  fontWeight: 600,
+                  fontSize: '16px',
+                  lineHeight: '22px'
+                }
+              }
+            }),
+
+            ...(ownerState.className?.includes('body-table') && {
+              borderCollapse: 'separate',
+              borderSpacing: '0 12px',
+              backgroundColor: '#EEEEEE'
+            })
+          };
         }
       }
     },
-
     MuiTableCell: {
       styleOverrides: {
         root: {
           fontSize: '14px',
-          borderBottom: 'none',
-          boxShadow: 'none',
-          padding: 0,
-          paddingLeft: '16px',
-          alignItems: 'center'
+          borderBottom: 'none'
         },
         head: {
-          backgroundColor: '#EEEEEE',
           fontWeight: 600,
-          height: '30px',
-          padding: '4px 16px 4px 16px !important'
+          backgroundColor: '#EEEEEE'
         },
         body: {
-          backgroundColor: '#fff',
-          backdropFilter: 'blur(10px)',
-          height: '54px'
+          backgroundColor: '#FFF',
+          height: '54px',
+          padding: '12px 16px 12px'
+        }
+      }
+    },
+    MuiTableRow: {
+      styleOverrides: {
+        root: {
+          '&:nth-of-type(odd)': {
+            backgroundColor: '#FFFFFF'
+          },
+          '&:nth-of-type(even)': {
+            backgroundColor: '#F7F7F7'
+          },
+          borderRadius: '8px',
+          overflow: 'hidden',
+
+          '& td:first-of-type': {
+            borderTopLeftRadius: '8px',
+            borderBottomLeftRadius: '8px'
+          },
+          '& td:last-of-type': {
+            borderTopRightRadius: '8px',
+            borderBottomRightRadius: '8px'
+          }
         }
       }
     }
