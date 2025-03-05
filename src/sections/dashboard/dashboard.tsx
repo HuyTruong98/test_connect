@@ -1,9 +1,6 @@
-import { FilterList, MoreVert, Search } from '@mui/icons-material';
+import { Search, Tune } from '@mui/icons-material';
 import {
   Box,
-  Button,
-  Card,
-  CardContent,
   IconButton,
   InputAdornment,
   Paper,
@@ -18,6 +15,7 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/system';
 import { useState } from 'react';
+import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts';
 import PaginationCommon from '../../components/pagination-common/pagination';
 
 const StatusChip = styled('span')<{ status: string }>(({ theme, status }) => ({
@@ -178,20 +176,20 @@ export function DashboardView() {
     { name: 'Ralph Edwards', clinic: 'Clinic 005', status: 'Approved' }
   ];
 
-  const columnWidths = [
-    '20%', // Owner column
-    '25%', // Email column
-    '10%', // State column
-    '15%', // Clinic column
-    '15%', // Registration Date column
-    '15%' // Plan column
+  const dataChart = [
+    { name: '1-4 users', value: 50, color: '#E87EFC' },
+    { name: '1-10 users', value: 80, color: '#6FDD93' },
+    { name: '1-20 users', value: 60, color: '#FBBF54' },
+    { name: '1-50 users', value: 90, color: '#4A9CFF' }
   ];
+
+  const columnWidths = ['20%', '25%', '10%', '15%', '15%', '15%'];
 
   const handleSearch = (event: any) => {
     setSearch(event.target.value);
   };
 
-  const handleChangePage = (event: any, newPage: number) => {
+  const handleChangePage = (_event: any, newPage: number) => {
     setPage(newPage);
   };
 
@@ -207,7 +205,7 @@ export function DashboardView() {
       <Typography variant='h4' fontWeight='500' fontSize='40px' lineHeight='44px' marginBottom='24px'>
         Dashboard
       </Typography>
-      <Box display='flex' alignItems='center' mb={3}>
+      <Box display='flex' alignItems='center' mb={3} height='48px'>
         <TextField
           variant='outlined'
           size='small'
@@ -225,17 +223,33 @@ export function DashboardView() {
           sx={{
             marginRight: 2,
             width: '416px',
-            borderRadius: '999px'
+
+            '& .MuiOutlinedInput-root': {
+              borderRadius: '999px',
+              height: '48px'
+            }
           }}
         />
-        <Button variant='outlined' startIcon={<FilterList />} sx={{ textTransform: 'none' }}>
-          Filter
-        </Button>
+        <IconButton
+          sx={{
+            width: '48px',
+            height: '48px',
+            borderRadius: '999px',
+            border: '1px solid rgba(217, 217, 217, 1)',
+            backgroundColor: 'white',
+
+            '&:hover': {
+              backgroundColor: 'rgba(217, 217, 217, 0.2)'
+            }
+          }}
+        >
+          <Tune />
+        </IconButton>
       </Box>
       <Box display='flex' gap={3}>
         <Box flex={3}>
           <TableContainer component={Paper}>
-            <Box maxHeight='781px' overflow='hidden' bgcolor='#EEEEE'>
+            <Box maxHeight='781px' overflow='hidden' bgcolor='#EEEEEE'>
               <Box padding='0 24px'>
                 <Table stickyHeader className='header-table'>
                   <TableHead>
@@ -278,50 +292,110 @@ export function DashboardView() {
             </Box>
           </TableContainer>
         </Box>
-        <Box flex={1} display='flex' flexDirection='column' gap={3}>
-          <Card>
-            <CardContent>
-              <Box display='flex' justifyContent='space-between' mb={2}>
-                <Typography variant='h6' fontWeight='bold'>
+        <Box flex={1} display='flex' flexDirection='column' gap={2}>
+          <TableContainer component={Paper}>
+            <Box maxHeight='406px' overflow='hidden' bgcolor='#EEEEEE' height='406px' padding='16px'>
+              <Box width='100%' height='40px' display='flex' justifyContent='space-between' alignItems='center'>
+                <Typography
+                  variant='h6'
+                  fontWeight='600'
+                  color='rgba(46, 47, 49, 1)'
+                  fontSize='18px'
+                  lineHeight='28px'
+                  letterSpacing='2%'
+                >
                   New Registration
                 </Typography>
-                <IconButton>
-                  <MoreVert />
+                <IconButton
+                  sx={{
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: '999px',
+                    border: '1px solid rgba(217, 217, 217, 1)',
+                    backgroundColor: '#EEEEE',
+
+                    '&:hover': {
+                      backgroundColor: 'rgba(217, 217, 217, 0.2)'
+                    }
+                  }}
+                >
+                  <img src='/assets/images/icon/arrows-expand.svg' alt='Expand Icon' />
                 </IconButton>
               </Box>
-              {newRegistrations.map((item, index) => (
-                <Box key={index} display='flex' justifyContent='space-between' my={1}>
-                  <Typography>{item.name}</Typography>
-                  <Typography>{item.clinic}</Typography>
-                  <RegistrationStatusChip status={item.status}>{item.status}</RegistrationStatusChip>
+
+              <Box maxHeight='345px' overflow='auto'>
+                <Table className='body-table'>
+                  <TableBody>
+                    {newRegistrations.map((item, index) => (
+                      <TableRow key={index}>
+                        <TableCell>{item.name}</TableCell>
+                        <TableCell>{item.clinic}</TableCell>
+                        <TableCell>
+                          <RegistrationStatusChip status={item.status}>{item.status}</RegistrationStatusChip>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </Box>
+            </Box>
+          </TableContainer>
+
+          <Box maxHeight='359px' bgcolor='#EEEEEE' height='100%' borderRadius='24px' padding='16px'>
+            <Typography variant='subtitle1' fontWeight='600' width='100%' height='30px'>
+              Plan Type
+            </Typography>
+            <ResponsiveContainer width='100%' height={250}>
+              <PieChart>
+                <Pie
+                  data={dataChart}
+                  dataKey='value'
+                  innerRadius={70}
+                  outerRadius={100}
+                  paddingAngle={1}
+                  startAngle={90}
+                  endAngle={-270}
+                  cornerRadius={4}
+                >
+                  {dataChart.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Pie>
+                <text
+                  x='50%'
+                  y='50%'
+                  textAnchor='middle'
+                  dominantBaseline='middle'
+                  fontSize='48'
+                  fontWeight='700'
+                  fill='rgba(46, 47, 49, 1)'
+                >
+                  234
+                </text>
+                <text
+                  x='50%'
+                  y='63%'
+                  textAnchor='middle'
+                  dominantBaseline='middle'
+                  fontSize='14'
+                  fill='rgba(64, 64, 64, 1)'
+                  fontWeight='400'
+                >
+                  Clinics
+                </text>
+              </PieChart>
+            </ResponsiveContainer>
+            <Box display='flex' justifyContent='center' gap='20px' mt='18px'>
+              {dataChart.map((entry, index) => (
+                <Box key={index} display='flex' alignItems='center' gap={1}>
+                  <Box width={10} height={10} bgcolor={entry.color} borderRadius='50%' />
+                  <Typography fontSize='14px' fontWeight='600' lineHeight='22px'>
+                    {entry.name}
+                  </Typography>
                 </Box>
               ))}
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent>
-              <Typography variant='h6' fontWeight='bold' mb={2}>
-                Plan Type
-              </Typography>
-              {/* <ResponsiveContainer width='100%' height={200}>
-                <PieChart>
-                  <Pie data={planData} dataKey='value' nameKey='name' cx='50%' cy='50%' outerRadius={80} fill='#8884d8'>
-                    {planData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-                </PieChart>
-              </ResponsiveContainer>
-              <Box mt={2}>
-                {planData.map((item, index) => (
-                  <Box display='flex' justifyContent='space-between' key={index}>
-                    <Typography>{item.name}</Typography>
-                    <Typography>{item.value}</Typography>
-                  </Box>
-                ))}
-              </Box> */}
-            </CardContent>
-          </Card>
+            </Box>
+          </Box>
         </Box>
       </Box>
     </Box>
