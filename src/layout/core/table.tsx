@@ -27,7 +27,9 @@ export function table(): Components<Omit<Theme, 'components'>> {
                   padding: '0px',
                   fontWeight: 600,
                   fontSize: '16px',
-                  lineHeight: '22px'
+                  lineHeight: '22px',
+                  paddingLeft: '16px',
+                  paddingRight: '16px'
                 }
               }
             }),

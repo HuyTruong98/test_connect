@@ -178,6 +178,15 @@ export function DashboardView() {
     { name: 'Ralph Edwards', clinic: 'Clinic 005', status: 'Approved' }
   ];
 
+  const columnWidths = [
+    '20%', // Owner column
+    '25%', // Email column
+    '10%', // State column
+    '15%', // Clinic column
+    '15%', // Registration Date column
+    '15%' // Plan column
+  ];
+
   const handleSearch = (event: any) => {
     setSearch(event.target.value);
   };
@@ -226,17 +235,17 @@ export function DashboardView() {
       <Box display='flex' gap={3}>
         <Box flex={3}>
           <TableContainer component={Paper}>
-            <Box maxHeight='716px' overflow='hidden' bgcolor='#EEEEE'>
-              <Box padding='0 40px'>
+            <Box maxHeight='781px' overflow='hidden' bgcolor='#EEEEE'>
+              <Box padding='0 24px'>
                 <Table stickyHeader className='header-table'>
                   <TableHead>
                     <TableRow>
-                      <TableCell>Owner</TableCell>
-                      <TableCell>Email</TableCell>
-                      <TableCell>State</TableCell>
-                      <TableCell>Clinic</TableCell>
-                      <TableCell>Registration Date</TableCell>
-                      <TableCell>Plan</TableCell>
+                      <TableCell style={{ width: columnWidths[0] }}>Owner</TableCell>
+                      <TableCell style={{ width: columnWidths[1] }}>Email</TableCell>
+                      <TableCell style={{ width: columnWidths[2] }}>State</TableCell>
+                      <TableCell style={{ width: columnWidths[3] }}>Clinic</TableCell>
+                      <TableCell style={{ width: columnWidths[4] }}>Registration Date</TableCell>
+                      <TableCell style={{ width: columnWidths[5] }}>Plan</TableCell>
                     </TableRow>
                   </TableHead>
                 </Table>
@@ -247,26 +256,27 @@ export function DashboardView() {
                   <TableBody>
                     {filteredData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
                       <TableRow key={index}>
-                        <TableCell>{row.owner}</TableCell>
-                        <TableCell>{row.email}</TableCell>
-                        <TableCell>{row.state}</TableCell>
-                        <TableCell>{row.clinic}</TableCell>
-                        <TableCell>{row.registrationDate}</TableCell>
-                        <TableCell>{row.plan}</TableCell>
+                        <TableCell style={{ width: columnWidths[0] }}>{row.owner}</TableCell>
+                        <TableCell style={{ width: columnWidths[1] }}>{row.email}</TableCell>
+                        <TableCell style={{ width: columnWidths[2] }}>{row.state}</TableCell>
+                        <TableCell style={{ width: columnWidths[3] }}>{row.clinic}</TableCell>
+                        <TableCell style={{ width: columnWidths[4] }}>{row.registrationDate}</TableCell>
+                        <TableCell style={{ width: columnWidths[5] }}>{row.plan}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
                 </Table>
               </Box>
+
+              <PaginationCommon
+                totalResults={234}
+                page={page}
+                rowsPerPage={rowsPerPage}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+              />
             </Box>
           </TableContainer>
-          {/* <PaginationCommon
-            totalResults={234}
-            page={page}
-            rowsPerPage={rowsPerPage}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          /> */}
         </Box>
         <Box flex={1} display='flex' flexDirection='column' gap={3}>
           <Card>
