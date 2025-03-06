@@ -180,11 +180,7 @@ export function DashboardView() {
   const renderActions = () => {
     return (
       <>
-        <Button
-          variant='outlined'
-          onClick={() => setOpenDrawer(false)}
-          sx={{ width: '198px', height: '40px', borderRadius: '999px' }}
-        >
+        <Button variant='outlined' sx={{ width: '198px', height: '40px', borderRadius: '999px' }}>
           Clear
         </Button>
         <Button
