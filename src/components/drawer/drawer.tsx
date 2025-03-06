@@ -60,7 +60,8 @@ export function CommonDrawer({ open, onClose, title, children, actions, anchor, 
           sx={{
             display: 'flex',
             justifyContent: 'flex-end',
-            gap: '16px'
+            gap: '16px',
+            mt: '20px'
           }}
         >
           {actions}
