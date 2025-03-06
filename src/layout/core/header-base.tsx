@@ -8,7 +8,7 @@ export function HeaderBase() {
   const pathname = usePathname();
 
   return (
-    <AppBar position='fixed' color='inherit' elevation={0} sx={{ zIndex: 1201 }}>
+    <AppBar position='fixed' color='inherit' elevation={0} sx={{ zIndex: 1 }}>
       <Toolbar sx={{ justifyContent: 'space-between', px: '40px !important', height: '88px' }}>
         {/* Logo */}
         <img src='/logo/logo.png' alt='Logo' style={{ height: '26px' }} />

@@ -1,6 +1,8 @@
 import { Search, Tune } from '@mui/icons-material';
 import {
   Box,
+  Button,
+  Chip,
   IconButton,
   InputAdornment,
   Paper,
@@ -13,45 +15,16 @@ import {
   TextField,
   Typography
 } from '@mui/material';
-import { styled } from '@mui/system';
 import { useState } from 'react';
 import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts';
 import PaginationCommon from '../../components/pagination-common/pagination';
-
-const StatusChip = styled('span')<{ status: string }>(({ theme, status }) => ({
-  display: 'inline-block',
-  padding: '4px 12px',
-  fontSize: '12px',
-  fontWeight: 500,
-  borderRadius: '12px',
-  color: status === 'Active' ? theme.palette.success.main : theme.palette.error.main,
-  backgroundColor: status === 'Active' ? theme.palette.success.light : theme.palette.error.light
-}));
-
-const RegistrationStatusChip = styled('span')<{ status: string }>(({ theme, status }) => ({
-  display: 'inline-block',
-  padding: '4px 12px',
-  fontSize: '12px',
-  fontWeight: 500,
-  borderRadius: '12px',
-  color:
-    status === 'Waiting'
-      ? theme.palette.warning.main
-      : status === 'Approved'
-        ? theme.palette.success.main
-        : theme.palette.error.main,
-  backgroundColor:
-    status === 'Waiting'
-      ? theme.palette.warning.light
-      : status === 'Approved'
-        ? theme.palette.success.light
-        : theme.palette.error.light
-}));
+import { CommonDrawer } from '../../components/drawer';
 
 export function DashboardView() {
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [openDrawer, setOpenDrawer] = useState<boolean>(false);
 
   const data = [
     {
@@ -200,6 +173,32 @@ export function DashboardView() {
 
   const filteredData = data.filter((row) => row.owner.toLowerCase().includes(search.toLowerCase()));
 
+  const renderContent = () => {
+    return <div>abc</div>;
+  };
+
+  const renderActions = () => {
+    return (
+      <>
+        <Button
+          variant='outlined'
+          onClick={() => setOpenDrawer(false)}
+          sx={{ width: '198px', height: '40px', borderRadius: '999px' }}
+        >
+          Clear
+        </Button>
+        <Button
+          variant='outlined'
+          color='inherit'
+          className='loading-button'
+          sx={{ width: '198px', height: '40px', borderRadius: '999px' }}
+        >
+          Apply
+        </Button>
+      </>
+    );
+  };
+
   return (
     <Box>
       <Typography variant='h4' fontWeight='500' fontSize='40px' lineHeight='44px' marginBottom='24px'>
@@ -242,6 +241,7 @@ export function DashboardView() {
               backgroundColor: 'rgba(217, 217, 217, 0.2)'
             }
           }}
+          onClick={() => setOpenDrawer(true)}
         >
           <Tune />
         </IconButton>
@@ -272,7 +272,9 @@ export function DashboardView() {
                       <TableRow key={index}>
                         <TableCell style={{ width: columnWidths[0] }}>{row.owner}</TableCell>
                         <TableCell style={{ width: columnWidths[1] }}>{row.email}</TableCell>
-                        <TableCell style={{ width: columnWidths[2] }}>{row.state}</TableCell>
+                        <TableCell style={{ width: columnWidths[2] }}>
+                          <Chip label={row.state} color={row.state.toLowerCase() as any} />
+                        </TableCell>
                         <TableCell style={{ width: columnWidths[3] }}>{row.clinic}</TableCell>
                         <TableCell style={{ width: columnWidths[4] }}>{row.registrationDate}</TableCell>
                         <TableCell style={{ width: columnWidths[5] }}>{row.plan}</TableCell>
@@ -331,7 +333,7 @@ export function DashboardView() {
                         <TableCell>{item.name}</TableCell>
                         <TableCell>{item.clinic}</TableCell>
                         <TableCell>
-                          <RegistrationStatusChip status={item.status}>{item.status}</RegistrationStatusChip>
+                          <Chip label={item.status} color={item.status.toLowerCase() as any} />
                         </TableCell>
                       </TableRow>
                     ))}
@@ -398,6 +400,22 @@ export function DashboardView() {
           </Box>
         </Box>
       </Box>
+
+      {openDrawer && (
+        <CommonDrawer
+          open={openDrawer}
+          onClose={() => setOpenDrawer(false)}
+          styles={{
+            width: '475px',
+            height: '100%',
+            backgroundColor: 'rgba(255, 255, 255, 1)',
+            padding: '15px 40px 40px 24px'
+          }}
+          title='Filter'
+          children={renderContent()}
+          actions={renderActions()}
+        />
+      )}
     </Box>
   );
 }
