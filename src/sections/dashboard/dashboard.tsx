@@ -1,4 +1,5 @@
 import { Search, Tune } from '@mui/icons-material';
+import CloseIcon from '@mui/icons-material/Close';
 import {
   Box,
   Button,
@@ -19,12 +20,28 @@ import {
   TextField,
   Typography
 } from '@mui/material';
+import dayjs, { Dayjs } from 'dayjs';
 import { useState } from 'react';
 import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts';
 import { CustomDatePicker } from '../../components/date-picker';
 import { CommonDrawer } from '../../components/drawer';
 import { Label } from '../../components/label';
 import PaginationCommon from '../../components/pagination-common/pagination';
+import { IQueryDashBoard } from '../../types/dashboard';
+
+const chipStyles = {
+  bgcolor: 'rgba(46, 47, 49, 1)',
+  color: 'white',
+  height: '48px',
+  width: 'auto',
+  padding: '12px',
+  '& .MuiChip-label': {
+    fontWeight: 400,
+    fontSize: '14px',
+    lineHeight: '22px',
+    color: 'rgba(255, 255, 255, 1)'
+  }
+};
 
 export function DashboardView() {
   const [state, setState] = useState<{
@@ -32,14 +49,39 @@ export function DashboardView() {
     page: number;
     rowsPerPage: number;
     openDrawer: boolean;
-    query: string;
+    query: IQueryDashBoard;
+    appliedQuery: IQueryDashBoard;
   }>({
     search: '',
     page: 0,
     rowsPerPage: 10,
     openDrawer: false,
-    query: 'all'
+    query: {
+      fromDate: null,
+      toDate: null,
+      planType: [],
+      state: 'all'
+    },
+    appliedQuery: {
+      fromDate: null,
+      toDate: null,
+      planType: [],
+      state: 'all'
+    }
   });
+
+  const handleApply = () => {
+    setState({ ...state, appliedQuery: { ...state.appliedQuery, ...state.query }, openDrawer: false });
+  };
+
+  const renderChip = (label: string, onDelete: () => void) => (
+    <Chip
+      label={label}
+      sx={chipStyles}
+      onDelete={onDelete}
+      deleteIcon={<CloseIcon sx={{ color: 'white !important' }} />}
+    />
+  );
 
   const data = [
     {
@@ -171,6 +213,8 @@ export function DashboardView() {
     { name: '1-50 users', value: 90, color: '#4A9CFF' }
   ];
 
+  const plans = ['1-4 Users', '1-10 Users', '1-20 Users', '1-50 Users'];
+
   const columnWidths = ['20%', '25%', '10%', '15%', '15%', '15%'];
 
   const handleSearch = (event: any) => {
@@ -186,6 +230,54 @@ export function DashboardView() {
   };
 
   const filteredData = data.filter((row) => row.owner.toLowerCase().includes(state.search.toLowerCase()));
+
+  const handleFromDateChange = (date: Dayjs | null) => {
+    if (!date) return;
+
+    if (!state.query.toDate || date.isAfter(state.query.toDate)) {
+      setState({ ...state, query: { ...state.query, toDate: date, fromDate: date } });
+    } else {
+      setState({ ...state, query: { ...state.query, fromDate: date } });
+    }
+  };
+
+  const handleToDateChange = (date: Dayjs | null) => {
+    if (!date) return;
+
+    if (!state.query.fromDate || date.isBefore(state.query.fromDate)) {
+      setState({ ...state, query: { ...state.query, fromDate: date, toDate: date } });
+    } else {
+      setState({ ...state, query: { ...state.query, toDate: date } });
+    }
+  };
+
+  const handleChangePlan = (plan: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    setState({
+      ...state,
+      query: {
+        ...state.query,
+        planType: event.target.checked
+          ? [...state.query.planType, plan]
+          : state.query.planType.filter((item) => item !== plan)
+      }
+    });
+  };
+
+  const handleRemoveFilter = (key: keyof IQueryDashBoard, value?: string) => {
+    setState((prevState) => ({
+      ...prevState,
+      appliedQuery: {
+        ...prevState.appliedQuery,
+        ...(key === 'fromDate'
+          ? { fromDate: null, toDate: null }
+          : key === 'planType' && value
+            ? { planType: prevState.appliedQuery.planType.filter((type) => type !== value) }
+            : key === 'state'
+              ? { state: 'all' }
+              : { [key]: null })
+      }
+    }));
+  };
 
   const renderContent = () => {
     return (
@@ -205,10 +297,18 @@ export function DashboardView() {
         </Box>
         <Box display='flex' gap={2} alignItems='center'>
           <Label label='From'>
-            <CustomDatePicker />
+            <CustomDatePicker
+              value={state.query.fromDate}
+              onChange={handleFromDateChange}
+              maxDate={state.query.toDate || undefined}
+            />
           </Label>
           <Label label='To'>
-            <CustomDatePicker />
+            <CustomDatePicker
+              value={state.query.toDate}
+              onChange={handleToDateChange}
+              minDate={state.query.fromDate || undefined}
+            />
           </Label>
         </Box>
 
@@ -218,10 +318,10 @@ export function DashboardView() {
         >
           <TextField
             select
-            value={state.query}
+            value={state.query.state}
             onChange={(event) => {
               const { value } = event.target;
-              setState({ ...state, query: value });
+              setState({ ...state, query: { ...state.query, state: value } });
             }}
           >
             <MenuItem value='all'>All</MenuItem>
@@ -233,8 +333,12 @@ export function DashboardView() {
         <Box>
           <Label label='Plan Type'>
             <Stack spacing={1}>
-              {['1-4 Users', '1-10 Users', '1-20 Users', '1-50 Users'].map((plan) => (
-                <FormControlLabel key={plan} control={<Checkbox />} label={plan} />
+              {plans.map((plan, index) => (
+                <FormControlLabel
+                  key={index}
+                  control={<Checkbox checked={state.query.planType.includes(plan)} onChange={handleChangePlan(plan)} />}
+                  label={plan}
+                />
               ))}
             </Stack>
           </Label>
@@ -254,6 +358,7 @@ export function DashboardView() {
           color='inherit'
           className='loading-button'
           sx={{ width: '198px', height: '40px', borderRadius: '999px' }}
+          onClick={handleApply}
         >
           Apply
         </Button>
@@ -307,6 +412,20 @@ export function DashboardView() {
         >
           <Tune />
         </IconButton>
+
+        <Stack direction='row' gap='12px' ml='12px'>
+          {state.appliedQuery.fromDate &&
+            renderChip(
+              `${dayjs(state.appliedQuery.fromDate).format('YYYY/MM/DD')} - ${dayjs(state.appliedQuery.toDate).format('YYYY/MM/DD')}`,
+              () => handleRemoveFilter('fromDate')
+            )}
+
+          {state.appliedQuery.planType.length > 0 &&
+            state.appliedQuery.planType.map((type) => renderChip(type, () => handleRemoveFilter('planType', type)))}
+
+          {state.appliedQuery.state !== 'all' &&
+            renderChip(state.appliedQuery.state, () => handleRemoveFilter('state'))}
+        </Stack>
       </Box>
       <Box display='flex' gap={3}>
         <Box flex={3}>
