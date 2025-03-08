@@ -1,5 +1,5 @@
+import { Box, MenuItem, Pagination, PaginationItem, SelectChangeEvent, TextField, Typography } from '@mui/material';
 import React from 'react';
-import { Box, Select, MenuItem, Typography, Pagination, PaginationItem, SelectChangeEvent } from '@mui/material';
 
 interface PaginationCommonProps {
   totalResults: number;
@@ -35,16 +35,12 @@ const PaginationCommon: React.FC<PaginationCommonProps> = ({
       }}
     >
       <Box display='flex' alignItems='center'>
-        <Select
+        <TextField
+          select
+          onChange={(event: any) => onRowsPerPageChange(event)}
           value={rowsPerPage}
-          onChange={onRowsPerPageChange}
-          size='small'
+          variant='outlined'
           sx={{
-            marginRight: '8px',
-            backgroundColor: '#fff',
-            border: 'none',
-            borderRadius: '8px',
-
             '& .MuiOutlinedInput-notchedOutline': {
               border: 'none'
             }
@@ -55,7 +51,7 @@ const PaginationCommon: React.FC<PaginationCommonProps> = ({
               {size}
             </MenuItem>
           ))}
-        </Select>
+        </TextField>
         <Typography variant='body2'>of {totalResults} results</Typography>
       </Box>
 
