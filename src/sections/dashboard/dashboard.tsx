@@ -2,10 +2,14 @@ import { Search, Tune } from '@mui/icons-material';
 import {
   Box,
   Button,
+  Checkbox,
   Chip,
+  FormControlLabel,
   IconButton,
   InputAdornment,
+  MenuItem,
   Paper,
+  Stack,
   Table,
   TableBody,
   TableCell,
@@ -17,14 +21,25 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts';
-import PaginationCommon from '../../components/pagination-common/pagination';
+import { CustomDatePicker } from '../../components/date-picker';
 import { CommonDrawer } from '../../components/drawer';
+import { Label } from '../../components/label';
+import PaginationCommon from '../../components/pagination-common/pagination';
 
 export function DashboardView() {
-  const [search, setSearch] = useState('');
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [openDrawer, setOpenDrawer] = useState<boolean>(false);
+  const [state, setState] = useState<{
+    search: string;
+    page: number;
+    rowsPerPage: number;
+    openDrawer: boolean;
+    query: string;
+  }>({
+    search: '',
+    page: 0,
+    rowsPerPage: 10,
+    openDrawer: false,
+    query: 'all'
+  });
 
   const data = [
     {
@@ -159,22 +174,73 @@ export function DashboardView() {
   const columnWidths = ['20%', '25%', '10%', '15%', '15%', '15%'];
 
   const handleSearch = (event: any) => {
-    setSearch(event.target.value);
+    setState({ ...state, search: event.target.value });
   };
 
   const handleChangePage = (_event: any, newPage: number) => {
-    setPage(newPage);
+    setState({ ...state, page: newPage });
   };
 
   const handleChangeRowsPerPage = (event: any) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
+    setState({ ...state, rowsPerPage: parseInt(event.target.value, 10), page: 0 });
   };
 
-  const filteredData = data.filter((row) => row.owner.toLowerCase().includes(search.toLowerCase()));
+  const filteredData = data.filter((row) => row.owner.toLowerCase().includes(state.search.toLowerCase()));
 
   const renderContent = () => {
-    return <div>abc</div>;
+    return (
+      <Stack spacing={2}>
+        <Box width='100%' height='24px'>
+          <Typography
+            width='100%'
+            height='100%'
+            fontWeight='600'
+            fontSize='16px'
+            lineHeight='24px'
+            color='rgba(46, 47, 49, 1)'
+            mb='12px'
+          >
+            Registration Date
+          </Typography>
+        </Box>
+        <Box display='flex' gap={2} alignItems='center'>
+          <Label label='From'>
+            <CustomDatePicker />
+          </Label>
+          <Label label='To'>
+            <CustomDatePicker />
+          </Label>
+        </Box>
+
+        <Label
+          label='State'
+          styles={{ fontWeight: 600, fontSize: '16px', lineHeight: '24px', color: 'rgba(46, 47, 49, 1)' }}
+        >
+          <TextField
+            select
+            value={state.query}
+            onChange={(event) => {
+              const { value } = event.target;
+              setState({ ...state, query: value });
+            }}
+          >
+            <MenuItem value='all'>All</MenuItem>
+            <MenuItem value='active'>Active</MenuItem>
+            <MenuItem value='inactive'>Inactive</MenuItem>
+          </TextField>
+        </Label>
+
+        <Box>
+          <Label label='Plan Type'>
+            <Stack spacing={1}>
+              {['1-4 Users', '1-10 Users', '1-20 Users', '1-50 Users'].map((plan) => (
+                <FormControlLabel key={plan} control={<Checkbox />} label={plan} />
+              ))}
+            </Stack>
+          </Label>
+        </Box>
+      </Stack>
+    );
   };
 
   const renderActions = () => {
@@ -206,7 +272,7 @@ export function DashboardView() {
           size='small'
           placeholder='Search'
           fullWidth
-          value={search}
+          value={state.search}
           onChange={handleSearch}
           InputProps={{
             startAdornment: (
@@ -237,7 +303,7 @@ export function DashboardView() {
               backgroundColor: 'rgba(217, 217, 217, 0.2)'
             }
           }}
-          onClick={() => setOpenDrawer(true)}
+          onClick={() => setState({ ...state, openDrawer: true })}
         >
           <Tune />
         </IconButton>
@@ -264,26 +330,28 @@ export function DashboardView() {
               <Box maxHeight='672px' overflow='auto' padding='0 24px'>
                 <Table className='body-table'>
                   <TableBody>
-                    {filteredData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
-                      <TableRow key={index}>
-                        <TableCell style={{ width: columnWidths[0] }}>{row.owner}</TableCell>
-                        <TableCell style={{ width: columnWidths[1] }}>{row.email}</TableCell>
-                        <TableCell style={{ width: columnWidths[2] }}>
-                          <Chip label={row.state} color={row.state.toLowerCase() as any} />
-                        </TableCell>
-                        <TableCell style={{ width: columnWidths[3] }}>{row.clinic}</TableCell>
-                        <TableCell style={{ width: columnWidths[4] }}>{row.registrationDate}</TableCell>
-                        <TableCell style={{ width: columnWidths[5] }}>{row.plan}</TableCell>
-                      </TableRow>
-                    ))}
+                    {filteredData
+                      .slice(state.page * state.rowsPerPage, state.page * state.rowsPerPage + state.rowsPerPage)
+                      .map((row, index) => (
+                        <TableRow key={index}>
+                          <TableCell style={{ width: columnWidths[0] }}>{row.owner}</TableCell>
+                          <TableCell style={{ width: columnWidths[1] }}>{row.email}</TableCell>
+                          <TableCell style={{ width: columnWidths[2] }}>
+                            <Chip label={row.state} color={row.state.toLowerCase() as any} />
+                          </TableCell>
+                          <TableCell style={{ width: columnWidths[3] }}>{row.clinic}</TableCell>
+                          <TableCell style={{ width: columnWidths[4] }}>{row.registrationDate}</TableCell>
+                          <TableCell style={{ width: columnWidths[5] }}>{row.plan}</TableCell>
+                        </TableRow>
+                      ))}
                   </TableBody>
                 </Table>
               </Box>
 
               <PaginationCommon
                 totalResults={234}
-                page={page}
-                rowsPerPage={rowsPerPage}
+                page={state.page}
+                rowsPerPage={state.rowsPerPage}
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
               />
@@ -397,21 +465,19 @@ export function DashboardView() {
         </Box>
       </Box>
 
-      {openDrawer && (
-        <CommonDrawer
-          open={openDrawer}
-          onClose={() => setOpenDrawer(false)}
-          styles={{
-            width: '475px',
-            height: '100%',
-            backgroundColor: 'rgba(255, 255, 255, 1)',
-            padding: '15px 40px 40px 24px'
-          }}
-          title='Filter'
-          children={renderContent()}
-          actions={renderActions()}
-        />
-      )}
+      <CommonDrawer
+        open={state.openDrawer}
+        onClose={() => setState({ ...state, openDrawer: false })}
+        styles={{
+          width: '475px',
+          height: '100%',
+          backgroundColor: 'rgba(255, 255, 255, 1)',
+          padding: '15px 40px 40px 24px'
+        }}
+        title='Filter'
+        children={renderContent()}
+        actions={renderActions()}
+      />
     </Box>
   );
 }

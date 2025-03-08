@@ -2,7 +2,7 @@ import type { TextFieldProps } from '@mui/material/TextField';
 
 import { Controller, useFormContext } from 'react-hook-form';
 
-import { GradientInput } from './styles';
+import { TextField } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
@@ -18,7 +18,7 @@ export function RHFTextField({ name, helperText, type, ...other }: Props) {
       name={name}
       control={control}
       render={({ field, fieldState: { error } }) => (
-        <GradientInput
+        <TextField
           {...field}
           fullWidth
           type={type}
