@@ -1,8 +1,10 @@
 // ----------------------------------------------------------------------
 
-const ROOTS = {
+export const ROOTS = {
   AUTH: '/auth',
-  DASHBOARD: '/dashboard'
+  DASHBOARD: '/dashboard',
+  ACCOUNT: '/account',
+  PLAN_SETTING: '/plan-setting'
 };
 
 // ----------------------------------------------------------------------
@@ -10,14 +12,20 @@ const ROOTS = {
 export const paths = {
   // AUTH
   auth: {
-    jwt: {
-      signIn: `${ROOTS.AUTH}/jwt/sign-in`,
-      signUp: `${ROOTS.AUTH}/jwt/sign-up`
-    }
+    login: `${ROOTS.AUTH}/login`
   },
 
   // DASHBOARD
   dashboard: {
     root: ROOTS.DASHBOARD
+  },
+
+  // ACCOUNT
+  account: {
+    root: ROOTS.ACCOUNT
+  },
+  // PLAN_SETTING
+  planSetting: {
+    root: ROOTS.PLAN_SETTING
   }
 };

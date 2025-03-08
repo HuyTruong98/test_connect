@@ -1,17 +1,16 @@
 import { Helmet } from 'react-helmet-async';
 
-import { SignUpView } from '../../../sections/auth/jwt';
-
 // ----------------------------------------------------------------------
+
+const metadata = { title: 'Setting' };
 
 export default function Page() {
   return (
     <>
       <Helmet>
-        <title>Sign in</title>
+        <title> {metadata.title}</title>
       </Helmet>
-
-      <SignUpView />
+      Account
     </>
   );
 }

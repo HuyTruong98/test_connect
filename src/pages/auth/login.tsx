@@ -1,6 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-
-import { SignInView } from '../../../sections/auth/jwt';
+import { LoginView } from '../../sections/auth';
 
 // ----------------------------------------------------------------------
 
@@ -11,7 +10,7 @@ export default function Page() {
         <title>Sign in</title>
       </Helmet>
 
-      <SignInView />
+      <LoginView />
     </>
   );
 }

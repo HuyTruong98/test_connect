@@ -1,33 +1,27 @@
 import { lazy, Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
+import { GuestGuard } from '../../auth/guard';
+import { ROOTS } from '../paths';
 
-const Jwt = {
-  SignInPage: lazy(() => import('../../pages/auth/jwt/sign-in')),
-  SignUpPage: lazy(() => import('../../pages/auth/jwt/sign-up'))
+const Auth = {
+  LoginPage: lazy(() => import('../../pages/auth/login'))
 };
 
-const authJwt = {
-  path: 'jwt',
-  children: [
-    {
-      path: 'sign-in',
-      element: <Jwt.SignInPage />
-    },
-    {
-      path: 'sign-up',
-      element: <Jwt.SignUpPage />
-    }
-  ]
+const authLogin = {
+  path: 'login',
+  element: <Auth.LoginPage />
 };
 
 export const authRoutes = [
   {
-    path: 'auth',
+    path: ROOTS.AUTH,
     element: (
-      <Suspense fallback={<div>Loading...</div>}>
-        <Outlet />
-      </Suspense>
+      <GuestGuard>
+        <Suspense fallback={<div>Loading...</div>}>
+          <Outlet />
+        </Suspense>
+      </GuestGuard>
     ),
-    children: [authJwt]
+    children: [authLogin]
   }
 ];

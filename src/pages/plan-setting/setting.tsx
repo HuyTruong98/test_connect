@@ -1,9 +1,8 @@
 import { Helmet } from 'react-helmet-async';
-import { DashboardView } from '../../sections/dashboard';
 
 // ----------------------------------------------------------------------
 
-const metadata = { title: `Dashboard` };
+const metadata = { title: 'Plan Setting' };
 
 export default function Page() {
   return (
@@ -11,8 +10,7 @@ export default function Page() {
       <Helmet>
         <title> {metadata.title}</title>
       </Helmet>
-
-      <DashboardView />
+      Plan Setting
     </>
   );
 }

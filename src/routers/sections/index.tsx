@@ -1,26 +1,13 @@
-import { Navigate, Outlet, useRoutes } from 'react-router-dom';
-import NotFoundPage from '../../pages/error/404';
+import { Navigate, useRoutes } from 'react-router-dom';
 import { authRoutes } from './auth';
 import { dashboardRoutes } from './dashboard';
-import PrivateRoute from '../../auth/privateRouter';
+import { mainRoutes } from './main.';
 
 export function Router() {
   return useRoutes([
     ...authRoutes,
-    {
-      path: '/',
-      element: <Navigate to='/dashboard' replace />
-    },
-    {
-      path: 'dashboard/*',
-      element: (
-        <PrivateRoute>
-          <Outlet />
-        </PrivateRoute>
-      ),
-      children: dashboardRoutes
-    },
-    { path: '/404', element: <NotFoundPage /> },
+    ...dashboardRoutes,
+    ...mainRoutes,
     { path: '*', element: <Navigate to='/404' replace /> }
   ]);
 }
