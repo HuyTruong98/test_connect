@@ -7,6 +7,7 @@ import { DashboardLayout } from '../../layout/dashboard';
 const DashboardMain = lazy(() => import('../../pages/dashboard/dashboard'));
 const Account = lazy(() => import('../../pages/account/account'));
 const Setting = lazy(() => import('../../pages/plan-setting/setting'));
+const AccountId = lazy(() => import('../../pages/account/accountId'));
 
 export const dashboardRoutes = [
   {
@@ -41,7 +42,17 @@ export const dashboardRoutes = [
           </Suspense>
         </DashboardLayout>
       </AuthGuard>
-    )
+    ),
+    children: [
+      {
+        path: '',
+        element: <Account />
+      },
+      {
+        path: ':id',
+        element: <AccountId />
+      }
+    ]
   },
   {
     path: ROOTS.PLAN_SETTING,

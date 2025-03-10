@@ -1,9 +1,12 @@
 import { Search, Tune } from '@mui/icons-material';
+import CloseIcon from '@mui/icons-material/Close';
 import {
   Box,
+  Button,
   Chip,
   IconButton,
   InputAdornment,
+  MenuItem,
   Paper,
   Stack,
   Table,
@@ -15,11 +18,13 @@ import {
   TextField,
   Typography
 } from '@mui/material';
+import dayjs, { Dayjs } from 'dayjs';
 import { useState } from 'react';
-import CloseIcon from '@mui/icons-material/Close';
-import { IQueryDashBoard } from '../../types/dashboard';
-import dayjs from 'dayjs';
+import { CustomDatePicker } from '../../components/date-picker';
+import { CommonDrawer } from '../../components/drawer';
+import { Label } from '../../components/label';
 import PaginationCommon from '../../components/pagination-common/pagination';
+import { IQueryDashBoard } from '../../types/dashboard';
 
 export function AccountView() {
   const [state, setState] = useState<{
@@ -55,7 +60,8 @@ export function AccountView() {
       state: 'Active',
       clinic: 'Clinic 001',
       registrationDate: '15 Dec 2024',
-      plan: '1-50 Users'
+      plan: '1-50 Users',
+      status: 'Owner'
     },
     {
       owner: 'Ralph Edwards',
@@ -63,7 +69,8 @@ export function AccountView() {
       state: 'Suspended',
       clinic: 'Clinic 002',
       registrationDate: '15 Dec 2024',
-      plan: '1-50 Users'
+      plan: '1-50 Users',
+      status: ''
     },
     {
       owner: 'Darlene Robertson',
@@ -71,7 +78,8 @@ export function AccountView() {
       state: 'Active',
       clinic: 'Clinic 003',
       registrationDate: '15 Dec 2024',
-      plan: '1-50 Users'
+      plan: '1-50 Users',
+      status: ''
     },
     {
       owner: 'Cody Fisher',
@@ -79,7 +87,8 @@ export function AccountView() {
       state: 'Active',
       clinic: 'Clinic 004',
       registrationDate: '15 Dec 2024',
-      plan: '1-50 Users'
+      plan: '1-50 Users',
+      status: ''
     },
     {
       owner: 'Devon Lane',
@@ -87,7 +96,8 @@ export function AccountView() {
       state: 'Active',
       clinic: 'Clinic 005',
       registrationDate: '15 Dec 2024',
-      plan: '1-50 Users'
+      plan: '1-50 Users',
+      status: 'Owner'
     },
     {
       owner: 'Ronald Richards',
@@ -119,7 +129,8 @@ export function AccountView() {
       state: 'Active',
       clinic: 'Clinic 003',
       registrationDate: '15 Dec 2024',
-      plan: '1-50 Users'
+      plan: '1-50 Users',
+      status: 'Owner'
     },
     {
       owner: 'Cody Fisher',
@@ -127,7 +138,8 @@ export function AccountView() {
       state: 'Active',
       clinic: 'Clinic 004',
       registrationDate: '15 Dec 2024',
-      plan: '1-50 Users'
+      plan: '1-50 Users',
+      status: 'Owner'
     },
     {
       owner: 'Devon Lane',
@@ -135,7 +147,8 @@ export function AccountView() {
       state: 'Active',
       clinic: 'Clinic 005',
       registrationDate: '15 Dec 2024',
-      plan: '1-50 Users'
+      plan: '1-50 Users',
+      status: ''
     },
     {
       owner: 'Ronald Richards',
@@ -143,7 +156,8 @@ export function AccountView() {
       state: 'Suspended',
       clinic: 'Clinic 006',
       registrationDate: '15 Dec 2024',
-      plan: '1-50 Users'
+      plan: '1-50 Users',
+      status: 'Owner'
     },
     {
       owner: 'Ronald Richards',
@@ -151,7 +165,8 @@ export function AccountView() {
       state: 'Suspended',
       clinic: 'Clinic 006',
       registrationDate: '15 Dec 2024',
-      plan: '1-50 Users'
+      plan: '1-50 Users',
+      status: 'Owner'
     },
     {
       owner: 'Ronald Richards',
@@ -172,7 +187,11 @@ export function AccountView() {
     { email: 'debra.holt@example.com', time: '6 hrs ago' }
   ];
 
-  const columnWidths = ['160px', '200px', '200px', '160px', '160px', '160px'];
+  const handleApply = () => {
+    setState({ ...state, appliedQuery: { ...state.appliedQuery, ...state.query }, openDrawer: false });
+  };
+
+  const columnWidths = ['230px', '200px', '200px', '160px', '160px', '160px'];
 
   const filteredData = data.filter((row) => row.owner.toLowerCase().includes(state.search.toLowerCase()));
 
@@ -213,6 +232,80 @@ export function AccountView() {
     setState({ ...state, search: event.target.value });
   };
 
+  const handleFromDateChange = (date: Dayjs | null) => {
+    if (!date) return;
+
+    if (!state.query.toDate || date.isAfter(state.query.toDate)) {
+      setState({ ...state, query: { ...state.query, toDate: date, fromDate: date } });
+    } else {
+      setState({ ...state, query: { ...state.query, fromDate: date } });
+    }
+  };
+
+  const handleToDateChange = (date: Dayjs | null) => {
+    if (!date) return;
+
+    if (!state.query.fromDate || date.isBefore(state.query.fromDate)) {
+      setState({ ...state, query: { ...state.query, fromDate: date, toDate: date } });
+    } else {
+      setState({ ...state, query: { ...state.query, toDate: date } });
+    }
+  };
+
+  const renderContent = () => {
+    return (
+      <Stack spacing={2}>
+        <Box width='100%' height='24px'>
+          <Typography
+            width='100%'
+            height='100%'
+            fontWeight='600'
+            fontSize='16px'
+            lineHeight='24px'
+            color='rgba(46, 47, 49, 1)'
+            mb='12px'
+          >
+            Registration Date
+          </Typography>
+        </Box>
+        <Box display='flex' gap={2} alignItems='center'>
+          <Label label='From'>
+            <CustomDatePicker
+              value={state.query.fromDate}
+              onChange={handleFromDateChange}
+              maxDate={state.query.toDate || undefined}
+            />
+          </Label>
+          <Label label='To'>
+            <CustomDatePicker
+              value={state.query.toDate}
+              onChange={handleToDateChange}
+              minDate={state.query.fromDate || undefined}
+            />
+          </Label>
+        </Box>
+      </Stack>
+    );
+  };
+
+  const renderActions = () => {
+    return (
+      <>
+        <Button variant='outlined' sx={{ width: '198px', height: '40px', borderRadius: '999px' }}>
+          Clear
+        </Button>
+        <Button
+          variant='outlined'
+          color='inherit'
+          className='loading-button'
+          sx={{ width: '198px', height: '40px', borderRadius: '999px' }}
+          onClick={handleApply}
+        >
+          Apply
+        </Button>
+      </>
+    );
+  };
   return (
     <Box>
       <Typography variant='h4' fontWeight='500' fontSize='40px' lineHeight='44px' marginBottom='24px'>
@@ -303,7 +396,18 @@ export function AccountView() {
                       .slice(state.page * state.rowsPerPage, state.page * state.rowsPerPage + state.rowsPerPage)
                       .map((row, index) => (
                         <TableRow key={index}>
-                          <TableCell style={{ width: columnWidths[0] }}>{row.owner}</TableCell>
+                          <TableCell style={{ width: columnWidths[0], whiteSpace: 'nowrap' }}>
+                            <Box display='flex' alignItems='center' gap='8px' overflow='hidden'>
+                              <Typography
+                                noWrap
+                                sx={{ textOverflow: 'ellipsis', overflow: 'hidden', maxWidth: '150px' }}
+                              >
+                                {row.owner}
+                              </Typography>
+                              {row.status && <Chip label={row.status} color={row.status.toLowerCase() as any} />}
+                            </Box>
+                          </TableCell>
+
                           <TableCell style={{ width: columnWidths[1] }}>{row.email}</TableCell>
                           <TableCell style={{ width: columnWidths[2] }}>
                             <Chip label={row.state} color={row.state.toLowerCase() as any} />
@@ -373,13 +477,100 @@ export function AccountView() {
             </Box>
           </TableContainer>
 
-          <Box maxHeight='295px' bgcolor='#FFF' height='100%' gap='8px'>
-            <Typography variant='subtitle1' fontWeight='600' width='100%' height='30px'>
-              New Account
-            </Typography>
+          <Box maxHeight='295px' bgcolor='#FFF' height='100%' gap='8px' display='flex'>
+            <Box
+              flex={1}
+              bgcolor='rgba(220, 255, 220, 1)'
+              borderRadius='12px'
+              padding='16px'
+              display='flex'
+              flexDirection='column'
+              justifyContent='space-between'
+            >
+              <Box>
+                <Typography variant='subtitle1' fontSize='14px' lineHeight='22px' fontWeight='500' marginBottom='16px'>
+                  Total New Accounts
+                </Typography>
+
+                <TextField select defaultValue='This Week' variant='outlined' className='MuiTextField-selectCustom'>
+                  <MenuItem value='This Week'>This Week</MenuItem>
+                  <MenuItem value='This Month'>This Month</MenuItem>
+                  <MenuItem value='This Year'>This Year</MenuItem>
+                </TextField>
+              </Box>
+              <Box>
+                <Box display='flex' alignItems='end' gap='12px' height='47px' mb='16px'>
+                  <Typography
+                    fontWeight='500'
+                    color='rgba(46, 47, 49, 1)'
+                    lineHeight='100%'
+                    height='100%'
+                    fontSize='55px'
+                  >
+                    345
+                  </Typography>
+                  <Chip label='+12%' size='small' color='new' />
+                </Box>
+                <Typography fontSize='12px' fontWeight='400' lineHeight='16px' color='rgba(64, 64, 64, 1)' mb='14px'>
+                  Compared to last week
+                </Typography>
+              </Box>
+            </Box>
+
+            <Box
+              flex={1}
+              bgcolor='rgba(255, 232, 232, 1)'
+              borderRadius='12px'
+              padding='16px'
+              display='flex'
+              flexDirection='column'
+              justifyContent='space-between'
+            >
+              <Box>
+                <Typography variant='subtitle1' fontSize='14px' lineHeight='22px' fontWeight='500' marginBottom='16px'>
+                  Total Closed Accounts
+                </Typography>
+
+                <TextField select defaultValue='This Week' variant='outlined' className='MuiTextField-selectCustom'>
+                  <MenuItem value='This Week'>This Week</MenuItem>
+                  <MenuItem value='This Month'>This Month</MenuItem>
+                  <MenuItem value='This Year'>This Year</MenuItem>
+                </TextField>
+              </Box>
+              <Box>
+                <Box display='flex' alignItems='end' gap='12px' height='47px' mb='16px'>
+                  <Typography
+                    fontWeight='500'
+                    color='rgba(46, 47, 49, 1)'
+                    lineHeight='100%'
+                    height='100%'
+                    fontSize='55px'
+                  >
+                    123
+                  </Typography>
+                  <Chip label='-12%' size='small' color='closed' />
+                </Box>
+                <Typography fontSize='12px' fontWeight='400' lineHeight='16px' color='rgba(64, 64, 64, 1)' mb='14px'>
+                  Compared to last month
+                </Typography>
+              </Box>
+            </Box>
           </Box>
         </Box>
       </Box>
+      <CommonDrawer
+        open={state.openDrawer}
+        onClose={() => setState({ ...state, openDrawer: false })}
+        styles={{
+          width: '475px',
+          height: '100%',
+          backgroundColor: 'rgba(255, 255, 255, 1)',
+          padding: '15px 40px 40px 24px'
+        }}
+        title='Filter'
+        children={renderContent()}
+        actions={renderActions()}
+      />
     </Box>
   );
 }

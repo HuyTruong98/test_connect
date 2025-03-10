@@ -8,6 +8,9 @@ declare module '@mui/material/Chip' {
     approved: true;
     refuse: true;
     search: true;
+    owner: true;
+    new: true;
+    closed: true;
   }
 }
 
@@ -26,6 +29,44 @@ export function chip(): Components<Omit<Theme, 'components'>> {
           justifyContent: 'center',
           borderRadius: '999px',
 
+          ...(ownerState.color === 'closed' && {
+            backgroundColor: 'rgba(255, 232, 232, 1)',
+            border: '1px solid rgba(232, 67, 73, 1)',
+            color: 'rgba(232, 67, 73, 1)',
+            height: '20px',
+            padding: '2px 12px',
+            '& .MuiChip-label': {
+              fontWeight: 400,
+              fontSize: '12px',
+              lineHeight: '16px',
+              padding: '0px'
+            }
+          }),
+          ...(ownerState.color === 'new' && {
+            backgroundColor: 'rgba(232, 255, 228, 1)',
+            border: '1px solid rgba(81, 192, 114, 1)',
+            color: 'rgba(81, 192, 114, 1)',
+            height: '20px',
+            padding: '2px 12px',
+            '& .MuiChip-label': {
+              fontWeight: 400,
+              fontSize: '12px',
+              lineHeight: '16px',
+              padding: '0px'
+            }
+          }),
+          ...(ownerState.color === 'owner' && {
+            background: 'linear-gradient(to right, #fe92ed, #b39cf6, #83a3f7, #08a6fe)',
+            color: 'rgba(255, 255, 255, 1)',
+            height: '20px',
+            padding: '2px 12px',
+            '& .MuiChip-label': {
+              fontWeight: 400,
+              fontSize: '12px',
+              lineHeight: '16px',
+              padding: '0px'
+            }
+          }),
           ...(ownerState.color === 'search' && {
             backgroundColor: 'rgba(46, 47, 49, 1)',
             color: 'rgba(255, 255, 255, 1)',
