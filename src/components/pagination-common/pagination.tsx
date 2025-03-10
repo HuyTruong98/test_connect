@@ -34,7 +34,7 @@ const PaginationCommon: React.FC<PaginationCommonProps> = ({
         borderBottomLeftRadius: '24px'
       }}
     >
-      <Box display='flex' alignItems='center'>
+      <Box display='flex' alignItems='center' gap='8px'>
         <TextField
           select
           onChange={(event: any) => onRowsPerPageChange(event)}

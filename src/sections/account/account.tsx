@@ -1,14 +1,9 @@
 import { Search, Tune } from '@mui/icons-material';
-import CloseIcon from '@mui/icons-material/Close';
 import {
   Box,
-  Button,
-  Checkbox,
   Chip,
-  FormControlLabel,
   IconButton,
   InputAdornment,
-  MenuItem,
   Paper,
   Stack,
   Table,
@@ -20,16 +15,13 @@ import {
   TextField,
   Typography
 } from '@mui/material';
-import dayjs, { Dayjs } from 'dayjs';
 import { useState } from 'react';
-import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts';
-import { CustomDatePicker } from '../../components/date-picker';
-import { CommonDrawer } from '../../components/drawer';
-import { Label } from '../../components/label';
-import PaginationCommon from '../../components/pagination-common/pagination';
+import CloseIcon from '@mui/icons-material/Close';
 import { IQueryDashBoard } from '../../types/dashboard';
+import dayjs from 'dayjs';
+import PaginationCommon from '../../components/pagination-common/pagination';
 
-export function DashboardView() {
+export function AccountView() {
   const [state, setState] = useState<{
     search: string;
     page: number;
@@ -55,19 +47,6 @@ export function DashboardView() {
       state: 'all'
     }
   });
-
-  const handleApply = () => {
-    setState({ ...state, appliedQuery: { ...state.appliedQuery, ...state.query }, openDrawer: false });
-  };
-
-  const renderChip = (label: string, onDelete: () => void) => (
-    <Chip
-      label={label}
-      onDelete={onDelete}
-      color='search'
-      deleteIcon={<CloseIcon sx={{ color: 'white !important' }} />}
-    />
-  );
 
   const data = [
     {
@@ -185,27 +164,17 @@ export function DashboardView() {
   ];
 
   const newRegistrations = [
-    { name: 'Dianne Russell', clinic: 'Clinic 001', status: 'Waiting' },
-    { name: 'Guy Hawkins', clinic: 'Clinic 002', status: 'Waiting' },
-    { name: 'Annette Black', clinic: 'Clinic 003', status: 'Approved' },
-    { name: 'Courtney Henry', clinic: 'Clinic 004', status: 'Refuse' },
-    { name: 'Ralph Edwards', clinic: 'Clinic 005', status: 'Approved' }
+    { email: 'dolores.chambers@example.com', time: '1 hrs ago' },
+    { email: 'nevaeh.simmons@example.com', time: '2 hrs ago' },
+    { email: 'nathan.roberts@example.com', time: '3 hrs ago' },
+    { email: 'jackson.graham@example.com', time: '4 hrs ago' },
+    { email: 'willie.jennings@example.com', time: '5 hrs ago' },
+    { email: 'debra.holt@example.com', time: '6 hrs ago' }
   ];
-
-  const dataChart = [
-    { name: '1-4 users', value: 50, color: '#E87EFC' },
-    { name: '1-10 users', value: 80, color: '#6FDD93' },
-    { name: '1-20 users', value: 60, color: '#FBBF54' },
-    { name: '1-50 users', value: 90, color: '#4A9CFF' }
-  ];
-
-  const plans = ['1-4 Users', '1-10 Users', '1-20 Users', '1-50 Users'];
 
   const columnWidths = ['160px', '200px', '200px', '160px', '160px', '160px'];
 
-  const handleSearch = (event: any) => {
-    setState({ ...state, search: event.target.value });
-  };
+  const filteredData = data.filter((row) => row.owner.toLowerCase().includes(state.search.toLowerCase()));
 
   const handleChangePage = (_event: any, newPage: number) => {
     setState({ ...state, page: newPage });
@@ -215,39 +184,14 @@ export function DashboardView() {
     setState({ ...state, rowsPerPage: parseInt(event.target.value, 10), page: 0 });
   };
 
-  const filteredData = data.filter((row) => row.owner.toLowerCase().includes(state.search.toLowerCase()));
-
-  const handleFromDateChange = (date: Dayjs | null) => {
-    if (!date) return;
-
-    if (!state.query.toDate || date.isAfter(state.query.toDate)) {
-      setState({ ...state, query: { ...state.query, toDate: date, fromDate: date } });
-    } else {
-      setState({ ...state, query: { ...state.query, fromDate: date } });
-    }
-  };
-
-  const handleToDateChange = (date: Dayjs | null) => {
-    if (!date) return;
-
-    if (!state.query.fromDate || date.isBefore(state.query.fromDate)) {
-      setState({ ...state, query: { ...state.query, fromDate: date, toDate: date } });
-    } else {
-      setState({ ...state, query: { ...state.query, toDate: date } });
-    }
-  };
-
-  const handleChangePlan = (plan: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    setState({
-      ...state,
-      query: {
-        ...state.query,
-        planType: event.target.checked
-          ? [...state.query.planType, plan]
-          : state.query.planType.filter((item) => item !== plan)
-      }
-    });
-  };
+  const renderChip = (label: string, onDelete: () => void) => (
+    <Chip
+      label={label}
+      onDelete={onDelete}
+      color='search'
+      deleteIcon={<CloseIcon sx={{ color: 'white !important' }} />}
+    />
+  );
 
   const handleRemoveFilter = (key: keyof IQueryDashBoard, value?: string) => {
     setState((prevState) => ({
@@ -265,97 +209,14 @@ export function DashboardView() {
     }));
   };
 
-  const renderContent = () => {
-    return (
-      <Stack spacing={2}>
-        <Box width='100%' height='24px'>
-          <Typography
-            width='100%'
-            height='100%'
-            fontWeight='600'
-            fontSize='16px'
-            lineHeight='24px'
-            color='rgba(46, 47, 49, 1)'
-            mb='12px'
-          >
-            Registration Date
-          </Typography>
-        </Box>
-        <Box display='flex' gap={2} alignItems='center'>
-          <Label label='From'>
-            <CustomDatePicker
-              value={state.query.fromDate}
-              onChange={handleFromDateChange}
-              maxDate={state.query.toDate || undefined}
-            />
-          </Label>
-          <Label label='To'>
-            <CustomDatePicker
-              value={state.query.toDate}
-              onChange={handleToDateChange}
-              minDate={state.query.fromDate || undefined}
-            />
-          </Label>
-        </Box>
-
-        <Label
-          label='State'
-          styles={{ fontWeight: 600, fontSize: '16px', lineHeight: '24px', color: 'rgba(46, 47, 49, 1)' }}
-        >
-          <TextField
-            select
-            value={state.query.state}
-            onChange={(event) => {
-              const { value } = event.target;
-              setState({ ...state, query: { ...state.query, state: value } });
-            }}
-          >
-            <MenuItem value='all'>All</MenuItem>
-            <MenuItem value='active'>Active</MenuItem>
-            <MenuItem value='inactive'>Inactive</MenuItem>
-          </TextField>
-        </Label>
-
-        <Box>
-          <Label label='Plan Type'>
-            <Stack spacing={1}>
-              {plans.map((plan, index) => (
-                <FormControlLabel
-                  key={index}
-                  control={<Checkbox checked={state.query.planType.includes(plan)} onChange={handleChangePlan(plan)} />}
-                  label={plan}
-                />
-              ))}
-            </Stack>
-          </Label>
-        </Box>
-      </Stack>
-    );
-  };
-
-  const renderActions = () => {
-    return (
-      <>
-        <Button variant='outlined' sx={{ width: '198px', height: '40px', borderRadius: '999px' }}>
-          Clear
-        </Button>
-        <Button
-          variant='outlined'
-          color='inherit'
-          className='loading-button'
-          sx={{ width: '198px', height: '40px', borderRadius: '999px' }}
-          onClick={handleApply}
-        >
-          Apply
-        </Button>
-      </>
-    );
+  const handleSearch = (event: any) => {
+    setState({ ...state, search: event.target.value });
   };
 
   return (
     <Box>
       <Typography variant='h4' fontWeight='500' fontSize='40px' lineHeight='44px' marginBottom='24px'>
-        Dashboard
+        Account Management
       </Typography>
       <Box display='flex' alignItems='center' mb={3} height='48px'>
         <TextField
@@ -468,7 +329,7 @@ export function DashboardView() {
         </Box>
         <Box flex={1} display='flex' flexDirection='column' gap={2}>
           <TableContainer component={Paper}>
-            <Box maxHeight='406px' overflow='hidden' bgcolor='#EEEEEE' height='406px' padding='16px'>
+            <Box maxHeight='476px' overflow='hidden' bgcolor='#EEEEEE' height='470px' padding='16px'>
               <Box width='100%' height='40px' display='flex' justifyContent='space-between' alignItems='center'>
                 <Typography
                   variant='h6'
@@ -478,7 +339,7 @@ export function DashboardView() {
                   lineHeight='28px'
                   letterSpacing='2%'
                 >
-                  New Registration
+                  New Account
                 </Typography>
                 <IconButton
                   sx={{
@@ -497,16 +358,13 @@ export function DashboardView() {
                 </IconButton>
               </Box>
 
-              <Box maxHeight='345px' overflow='auto'>
+              <Box maxHeight='444px' overflow='auto'>
                 <Table className='body-table'>
                   <TableBody>
                     {newRegistrations.map((item, index) => (
                       <TableRow key={index}>
-                        <TableCell>{item.name}</TableCell>
-                        <TableCell>{item.clinic}</TableCell>
-                        <TableCell>
-                          <Chip label={item.status} color={item.status.toLowerCase() as any} />
-                        </TableCell>
+                        <TableCell>{item.email}</TableCell>
+                        <TableCell>{item.time}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -515,77 +373,13 @@ export function DashboardView() {
             </Box>
           </TableContainer>
 
-          <Box maxHeight='359px' bgcolor='#EEEEEE' height='100%' borderRadius='24px' padding='16px'>
+          <Box maxHeight='295px' bgcolor='#FFF' height='100%' gap='8px'>
             <Typography variant='subtitle1' fontWeight='600' width='100%' height='30px'>
-              Plan Type
+              New Account
             </Typography>
-            <ResponsiveContainer width='100%' height={250}>
-              <PieChart>
-                <Pie
-                  data={dataChart}
-                  dataKey='value'
-                  innerRadius={70}
-                  outerRadius={100}
-                  paddingAngle={1}
-                  startAngle={90}
-                  endAngle={-270}
-                  cornerRadius={4}
-                >
-                  {dataChart.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-                <text
-                  x='50%'
-                  y='50%'
-                  textAnchor='middle'
-                  dominantBaseline='middle'
-                  fontSize='48'
-                  fontWeight='700'
-                  fill='rgba(46, 47, 49, 1)'
-                >
-                  234
-                </text>
-                <text
-                  x='50%'
-                  y='63%'
-                  textAnchor='middle'
-                  dominantBaseline='middle'
-                  fontSize='14'
-                  fill='rgba(64, 64, 64, 1)'
-                  fontWeight='400'
-                >
-                  Clinics
-                </text>
-              </PieChart>
-            </ResponsiveContainer>
-            <Box display='flex' justifyContent='center' gap='20px' mt='18px'>
-              {dataChart.map((entry, index) => (
-                <Box key={index} display='flex' alignItems='center' gap={1}>
-                  <Box width={10} height={10} bgcolor={entry.color} borderRadius='50%' />
-                  <Typography fontSize='14px' fontWeight='600' lineHeight='22px'>
-                    {entry.name}
-                  </Typography>
-                </Box>
-              ))}
-            </Box>
           </Box>
         </Box>
       </Box>
-
-      <CommonDrawer
-        open={state.openDrawer}
-        onClose={() => setState({ ...state, openDrawer: false })}
-        styles={{
-          width: '475px',
-          height: '100%',
-          backgroundColor: 'rgba(255, 255, 255, 1)',
-          padding: '15px 40px 40px 24px'
-        }}
-        title='Filter'
-        children={renderContent()}
-        actions={renderActions()}
-      />
     </Box>
   );
 }

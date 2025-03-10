@@ -26,7 +26,7 @@ export const dashboardRoutes = [
     ),
     children: [
       {
-        path: '', // "/dashboard"
+        path: '',
         element: <DashboardMain />
       }
     ]

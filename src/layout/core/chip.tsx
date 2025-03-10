@@ -7,6 +7,7 @@ declare module '@mui/material/Chip' {
     waiting: true;
     approved: true;
     refuse: true;
+    search: true;
   }
 }
 
@@ -18,13 +19,22 @@ export function chip(): Components<Omit<Theme, 'components'>> {
           fontWeight: '600',
           fontSize: '12px',
           lineHeight: '16px',
-          width: '88px',
+          width: 'max-content',
           height: '24px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           borderRadius: '999px',
 
+          ...(ownerState.color === 'search' && {
+            backgroundColor: 'rgba(46, 47, 49, 1)',
+            color: 'rgba(255, 255, 255, 1)',
+            height: '48px',
+            width: 'auto',
+            padding: '12px',
+            fontWeight: 400,
+            fontSize: '14px'
+          }),
           ...(ownerState.color === 'active' && {
             backgroundColor: 'rgba(219, 255, 230, 1)',
             color: 'rgba(4, 80, 26, 1)'
