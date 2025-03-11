@@ -3,6 +3,9 @@ import GppGoodOutlinedIcon from '@mui/icons-material/GppGoodOutlined';
 import {
   Box,
   Button,
+  Card,
+  CardContent,
+  CardHeader,
   Chip,
   IconButton,
   Paper,
@@ -20,6 +23,28 @@ import PaginationCommon from '../../components/pagination-common/pagination';
 import { useRouter } from '../../routers/hooks';
 import { ROOTS } from '../../routers/paths';
 import { IQueryDashBoard } from '../../types/dashboard';
+
+const InfoRow = ({ label, value }: { label: string; value: string; isBold?: boolean }) => (
+  <Box
+    display='flex'
+    justifyContent='space-between'
+    sx={{
+      marginBottom: '12px',
+      '&:last-child': {
+        marginBottom: 0
+      }
+    }}
+    height='32px'
+    width='100%'
+  >
+    <Typography variant='body2' color='rgba(46, 47, 49, 1)' fontWeight='400' fontSize='16px' lineHeight='100%'>
+      {label}
+    </Typography>
+    <Typography variant='body2' fontWeight='600' lineHeight='24px' fontSize='16px'>
+      {value}
+    </Typography>
+  </Box>
+);
 
 const data = [
   {
@@ -147,6 +172,14 @@ const data = [
 ];
 
 const columnWidths = ['230px', '200px', '200px', '160px', '160px', '160px'];
+
+const newRegistrations = [
+  { email: 'dolores.chambers@example.com', time: '1 hrs ago' },
+  { email: 'nevaeh.simmons@example.com', time: '2 hrs ago' },
+  { email: 'nathan.roberts@example.com', time: '3 hrs ago' },
+  { email: 'jackson.graham@example.com', time: '4 hrs ago' },
+  { email: 'willie.jennings@example.com', time: '5 hrs ago' }
+];
 
 export function AccountIdView() {
   const router = useRouter();
@@ -313,39 +346,83 @@ export function AccountIdView() {
         </Box>
 
         <Box flex={1} display='flex' flexDirection='column' gap={2}>
-          <TableContainer component={Paper}>
-            <Box
-              maxHeight='476px'
-              overflow='hidden'
-              height='470px'
-              padding='16px'
+          <Card
+            sx={{
+              maxHeight: '354px',
+              borderRadius: '24px',
+              background: 'linear-gradient(to right, #FE92ED40 0%, #B39CF640 33%, #83A3F740 66%, #08A6FE40 100%)',
+              height: '354px',
+              padding: '16px',
+              boxShadow: 'none'
+            }}
+          >
+            <CardHeader
+              title={
+                <Typography
+                  variant='h6'
+                  fontWeight='600'
+                  color='rgba(46, 47, 49, 1)'
+                  fontSize='18px'
+                  lineHeight='28px'
+                  letterSpacing='2%'
+                >
+                  Clinic Information
+                </Typography>
+              }
+              sx={{ padding: '0px' }}
+            />
+            <CardContent
               sx={{
-                background: 'linear-gradient(to right, #FE92ED, #B39CF6, #83A3F7,#08A6FE) !important'
+                backgroundColor: 'rgba(255, 255, 255, 1)',
+                borderRadius: '12px',
+                mt: '16px',
+                height: '276px',
+                px: '16px',
+                py: '12px',
+                paddingBottom: '12px'
               }}
-            ></Box>
+            >
+              <InfoRow label='Clinic Name:' value='Clinic001' />
+              <InfoRow label='Owner:' value='Floyd Miles' />
+              <InfoRow label='Email:' value='owner001@gmail.com' isBold />
+              <InfoRow label='Phone Number:' value='(319) 555-0115' />
+              <InfoRow label='Registration Date:' value='15 Dec 2024' isBold />
+              <InfoRow label='Plan Type:' value='1-50 Users' isBold />
+            </CardContent>
+          </Card>
+
+          <TableContainer component={Paper}>
+            <Box maxHeight='415px' overflow='hidden' bgcolor='#EEEEEE' height='410px' padding='16px'>
+              <Box width='100%' height='40px' display='flex' justifyContent='space-between' alignItems='center'>
+                <Typography
+                  variant='h6'
+                  fontWeight='600'
+                  color='rgba(46, 47, 49, 1)'
+                  fontSize='18px'
+                  lineHeight='28px'
+                  letterSpacing='2%'
+                >
+                  New Account
+                </Typography>
+                <IconButton data-variant='expand'>
+                  <img src='/assets/images/icon/arrows-expand.svg' alt='Expand Icon' />
+                </IconButton>
+              </Box>
+
+              <Box maxHeight='444px' overflow='auto'>
+                <Table className='body-table'>
+                  <TableBody>
+                    {newRegistrations.map((item, index) => (
+                      <TableRow key={index}>
+                        <TableCell>{item.email}</TableCell>
+                        <TableCell>{item.time}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </Box>
+            </Box>
           </TableContainer>
-
-          <Box maxHeight='295px' bgcolor='#FFF' height='100%' gap='8px' display='flex'>
-            <Box
-              flex={1}
-              bgcolor='rgba(220, 255, 220, 1)'
-              borderRadius='12px'
-              padding='16px'
-              display='flex'
-              flexDirection='column'
-              justifyContent='space-between'
-            ></Box>
-
-            <Box
-              flex={1}
-              bgcolor='rgba(255, 232, 232, 1)'
-              borderRadius='12px'
-              padding='16px'
-              display='flex'
-              flexDirection='column'
-              justifyContent='space-between'
-            ></Box>
-          </Box>
         </Box>
       </Box>
     </>
