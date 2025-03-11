@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet-async';
+import { AccountIdView } from '../../sections/account';
 
 // ----------------------------------------------------------------------
 
@@ -10,7 +11,8 @@ export default function Page() {
       <Helmet>
         <title> {metadata.title}</title>
       </Helmet>
-      AccountId
+
+      <AccountIdView />
     </>
   );
 }

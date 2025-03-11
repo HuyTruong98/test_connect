@@ -35,20 +35,7 @@ export function CommonDrawer({ open, onClose, title, children, actions, anchor, 
         >
           {title}
         </Typography>
-        <IconButton
-          onClick={onClose}
-          sx={{
-            width: '48px',
-            height: '48px',
-            borderRadius: '999px',
-            border: '1px solid rgba(217, 217, 217, 1)',
-            backgroundColor: 'white',
-
-            '&:hover': {
-              backgroundColor: 'rgba(217, 217, 217, 0.2)'
-            }
-          }}
-        >
+        <IconButton onClick={onClose}>
           <CloseIcon />
         </IconButton>
       </Box>

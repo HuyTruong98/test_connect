@@ -339,20 +339,7 @@ export function AccountView() {
             }
           }}
         />
-        <IconButton
-          sx={{
-            width: '48px',
-            height: '48px',
-            borderRadius: '999px',
-            border: '1px solid rgba(217, 217, 217, 1)',
-            backgroundColor: 'white',
-
-            '&:hover': {
-              backgroundColor: 'rgba(217, 217, 217, 0.2)'
-            }
-          }}
-          onClick={() => setState({ ...state, openDrawer: true })}
-        >
+        <IconButton onClick={() => setState({ ...state, openDrawer: true })}>
           <Tune />
         </IconButton>
 
@@ -445,19 +432,7 @@ export function AccountView() {
                 >
                   New Account
                 </Typography>
-                <IconButton
-                  sx={{
-                    width: '40px',
-                    height: '40px',
-                    borderRadius: '999px',
-                    border: '1px solid rgba(217, 217, 217, 1)',
-                    backgroundColor: '#EEEEE',
-
-                    '&:hover': {
-                      backgroundColor: 'rgba(217, 217, 217, 0.2)'
-                    }
-                  }}
-                >
+                <IconButton data-variant='expand'>
                   <img src='/assets/images/icon/arrows-expand.svg' alt='Expand Icon' />
                 </IconButton>
               </Box>

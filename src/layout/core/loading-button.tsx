@@ -20,6 +20,21 @@ export function loadingButton(): Components<Omit<Theme, 'components'>> {
               border: '1px solid rgba(46, 47, 49, 1)'
             }),
 
+            ...(ownerState.variant === 'outlined' &&
+              ownerState.className?.includes('active') && {
+                background: '#DBFFE6',
+                color: '#04501A',
+                borderRadius: '8px',
+                height: '40px',
+                textTransform: 'none',
+                fontWeight: 500,
+                padding: '8px 16px',
+                lineHeight: '22px',
+                transition: 'background 0.3s',
+                border: '1px solid #04501A',
+                fontSize: '14px'
+              }),
+
             ...(ownerState.color === 'inherit' &&
               ownerState.className?.includes('loading-button') &&
               ownerState.variant === 'outlined' && {
