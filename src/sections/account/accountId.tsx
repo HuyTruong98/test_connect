@@ -217,6 +217,23 @@ export function AccountIdView() {
         </Box>
       </Box>
 
+      <Box display='flex' gap='16px' ml='60px' mb='20px'>
+        <Button
+          variant='outlined'
+          startIcon={<img src='/assets/images/icon/user-settings.svg' alt='user-settings' />}
+          sx={{ height: '48px' }}
+        >
+          Permission
+        </Button>
+        <Button
+          variant='outlined'
+          startIcon={<img src='/assets/images/icon/invoice.svg' alt='invoice' />}
+          sx={{ height: '48px' }}
+        >
+          Subscriptions
+        </Button>
+      </Box>
+
       <Box display='flex' gap='16px'>
         <Stack spacing={2} alignItems='center' justifyContent='center'>
           <IconButton data-variant='primary'>
@@ -228,21 +245,13 @@ export function AccountIdView() {
           <IconButton data-variant='primary'>
             <img src='/assets/images/icon/triangle-exclamation.svg' alt='envelope-edit' />
           </IconButton>
+
           <IconButton data-variant='trash'>
             <img src='/assets/images/icon/trash.svg' alt='trash' />
           </IconButton>
         </Stack>
 
         <Box flex={3}>
-          <Box display='flex' gap={2}>
-            <Button variant='outlined' startIcon={<img src='/assets/icons/permission.svg' alt='Permission' />}>
-              Permission
-            </Button>
-            <Button variant='outlined' startIcon={<img src='/assets/icons/subscriptions.svg' alt='Subscriptions' />}>
-              Subscriptions
-            </Button>
-          </Box>
-
           <TableContainer component={Paper}>
             <Box maxHeight='781px' overflow='hidden' bgcolor='#EEEEEE'>
               <Box padding='0 24px'>
