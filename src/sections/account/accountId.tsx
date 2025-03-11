@@ -314,7 +314,15 @@ export function AccountIdView() {
 
         <Box flex={1} display='flex' flexDirection='column' gap={2}>
           <TableContainer component={Paper}>
-            <Box maxHeight='476px' overflow='hidden' bgcolor='#EEEEEE' height='470px' padding='16px'></Box>
+            <Box
+              maxHeight='476px'
+              overflow='hidden'
+              height='470px'
+              padding='16px'
+              sx={{
+                background: 'linear-gradient(to right, #FE92ED, #B39CF6, #83A3F7,#08A6FE) !important'
+              }}
+            ></Box>
           </TableContainer>
 
           <Box maxHeight='295px' bgcolor='#FFF' height='100%' gap='8px' display='flex'>
