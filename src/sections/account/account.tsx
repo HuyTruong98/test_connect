@@ -25,6 +25,7 @@ import { CommonDrawer } from '../../components/drawer';
 import { Label } from '../../components/label';
 import PaginationCommon from '../../components/pagination-common/pagination';
 import { IQueryDashBoard } from '../../types/dashboard';
+import { account, newRegistrationsAccount } from '../../_mock/data';
 
 export function AccountView() {
   const [state, setState] = useState<{
@@ -53,147 +54,13 @@ export function AccountView() {
     }
   });
 
-  const data = [
-    {
-      owner: 'Floyd Miles',
-      email: 'owner001@gmail.com',
-      state: 'Active',
-      clinic: 'Clinic 001',
-      registrationDate: '15 Dec 2024',
-      plan: '1-50 Users',
-      status: 'Owner'
-    },
-    {
-      owner: 'Ralph Edwards',
-      email: 'owner001@gmail.com',
-      state: 'Suspended',
-      clinic: 'Clinic 002',
-      registrationDate: '15 Dec 2024',
-      plan: '1-50 Users',
-      status: ''
-    },
-    {
-      owner: 'Darlene Robertson',
-      email: 'owner001@gmail.com',
-      state: 'Active',
-      clinic: 'Clinic 003',
-      registrationDate: '15 Dec 2024',
-      plan: '1-50 Users',
-      status: ''
-    },
-    {
-      owner: 'Cody Fisher',
-      email: 'owner001@gmail.com',
-      state: 'Active',
-      clinic: 'Clinic 004',
-      registrationDate: '15 Dec 2024',
-      plan: '1-50 Users',
-      status: ''
-    },
-    {
-      owner: 'Devon Lane',
-      email: 'owner001@gmail.com',
-      state: 'Active',
-      clinic: 'Clinic 005',
-      registrationDate: '15 Dec 2024',
-      plan: '1-50 Users',
-      status: 'Owner'
-    },
-    {
-      owner: 'Ronald Richards',
-      email: 'owner001@gmail.com',
-      state: 'Suspended',
-      clinic: 'Clinic 006',
-      registrationDate: '15 Dec 2024',
-      plan: '1-50 Users'
-    },
-    {
-      owner: 'Floyd Miles',
-      email: 'owner001@gmail.com',
-      state: 'Active',
-      clinic: 'Clinic 001',
-      registrationDate: '15 Dec 2024',
-      plan: '1-50 Users'
-    },
-    {
-      owner: 'Ralph Edwards',
-      email: 'owner001@gmail.com',
-      state: 'Suspended',
-      clinic: 'Clinic 002',
-      registrationDate: '15 Dec 2024',
-      plan: '1-50 Users'
-    },
-    {
-      owner: 'Darlene Robertson',
-      email: 'owner001@gmail.com',
-      state: 'Active',
-      clinic: 'Clinic 003',
-      registrationDate: '15 Dec 2024',
-      plan: '1-50 Users',
-      status: 'Owner'
-    },
-    {
-      owner: 'Cody Fisher',
-      email: 'owner001@gmail.com',
-      state: 'Active',
-      clinic: 'Clinic 004',
-      registrationDate: '15 Dec 2024',
-      plan: '1-50 Users',
-      status: 'Owner'
-    },
-    {
-      owner: 'Devon Lane',
-      email: 'owner001@gmail.com',
-      state: 'Active',
-      clinic: 'Clinic 005',
-      registrationDate: '15 Dec 2024',
-      plan: '1-50 Users',
-      status: ''
-    },
-    {
-      owner: 'Ronald Richards',
-      email: 'owner001@gmail.com',
-      state: 'Suspended',
-      clinic: 'Clinic 006',
-      registrationDate: '15 Dec 2024',
-      plan: '1-50 Users',
-      status: 'Owner'
-    },
-    {
-      owner: 'Ronald Richards',
-      email: 'owner001@gmail.com',
-      state: 'Suspended',
-      clinic: 'Clinic 006',
-      registrationDate: '15 Dec 2024',
-      plan: '1-50 Users',
-      status: 'Owner'
-    },
-    {
-      owner: 'Ronald Richards',
-      email: 'owner001@gmail.com',
-      state: 'Suspended',
-      clinic: 'Clinic 006',
-      registrationDate: '15 Dec 2024',
-      plan: '1-50 Users'
-    }
-  ];
-
-  const newRegistrations = [
-    { email: 'dolores.chambers@example.com', time: '1 hrs ago' },
-    { email: 'nevaeh.simmons@example.com', time: '2 hrs ago' },
-    { email: 'nathan.roberts@example.com', time: '3 hrs ago' },
-    { email: 'jackson.graham@example.com', time: '4 hrs ago' },
-    { email: 'willie.jennings@example.com', time: '5 hrs ago' },
-    { email: 'debra.holt@example.com', time: '6 hrs ago' }
-  ];
-
   const handleApply = () => {
     setState({ ...state, appliedQuery: { ...state.appliedQuery, ...state.query }, openDrawer: false });
   };
 
   const columnWidths = ['230px', '200px', '200px', '160px', '160px', '160px'];
 
-  const filteredData = data.filter((row) => row.owner.toLowerCase().includes(state.search.toLowerCase()));
+  const filteredData = account.filter((row) => row.owner.toLowerCase().includes(state.search.toLowerCase()));
 
   const handleChangePage = (_event: any, newPage: number) => {
     setState({ ...state, page: newPage });
@@ -440,7 +307,7 @@ export function AccountView() {
               <Box maxHeight='444px' overflow='auto'>
                 <Table className='body-table'>
                   <TableBody>
-                    {newRegistrations.map((item, index) => (
+                    {newRegistrationsAccount.map((item, index) => (
                       <TableRow key={index}>
                         <TableCell>{item.email}</TableCell>
                         <TableCell>{item.time}</TableCell>

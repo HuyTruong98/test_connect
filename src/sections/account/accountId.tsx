@@ -25,6 +25,9 @@ import PaginationCommon from '../../components/pagination-common/pagination';
 import { useRouter } from '../../routers/hooks';
 import { ROOTS } from '../../routers/paths';
 import { IQueryDashBoard } from '../../types/dashboard';
+import { account, dataPermission, newRegistrationsId } from '../../_mock/data';
+
+const columnWidthsPermission = ['320px', '200px', '200px', '200px', '200px', '200px', '200px'];
 
 const InfoRow = ({ label, value }: { label: string; value: string; isBold?: boolean }) => (
   <Box
@@ -48,153 +51,7 @@ const InfoRow = ({ label, value }: { label: string; value: string; isBold?: bool
   </Box>
 );
 
-const data = [
-  {
-    owner: 'Floyd Miles',
-    email: 'owner001@gmail.com',
-    state: 'Active',
-    clinic: 'Clinic 001',
-    registrationDate: '15 Dec 2024',
-    plan: '1-50 Users',
-    status: 'Owner'
-  },
-  {
-    owner: 'Ralph Edwards',
-    email: 'owner001@gmail.com',
-    state: 'Suspended',
-    clinic: 'Clinic 002',
-    registrationDate: '15 Dec 2024',
-    plan: '1-50 Users',
-    status: ''
-  },
-  {
-    owner: 'Darlene Robertson',
-    email: 'owner001@gmail.com',
-    state: 'Active',
-    clinic: 'Clinic 003',
-    registrationDate: '15 Dec 2024',
-    plan: '1-50 Users',
-    status: ''
-  },
-  {
-    owner: 'Cody Fisher',
-    email: 'owner001@gmail.com',
-    state: 'Active',
-    clinic: 'Clinic 004',
-    registrationDate: '15 Dec 2024',
-    plan: '1-50 Users',
-    status: ''
-  },
-  {
-    owner: 'Devon Lane',
-    email: 'owner001@gmail.com',
-    state: 'Active',
-    clinic: 'Clinic 005',
-    registrationDate: '15 Dec 2024',
-    plan: '1-50 Users',
-    status: 'Owner'
-  },
-  {
-    owner: 'Ronald Richards',
-    email: 'owner001@gmail.com',
-    state: 'Suspended',
-    clinic: 'Clinic 006',
-    registrationDate: '15 Dec 2024',
-    plan: '1-50 Users'
-  },
-  {
-    owner: 'Floyd Miles',
-    email: 'owner001@gmail.com',
-    state: 'Active',
-    clinic: 'Clinic 001',
-    registrationDate: '15 Dec 2024',
-    plan: '1-50 Users'
-  },
-  {
-    owner: 'Ralph Edwards',
-    email: 'owner001@gmail.com',
-    state: 'Suspended',
-    clinic: 'Clinic 002',
-    registrationDate: '15 Dec 2024',
-    plan: '1-50 Users'
-  },
-  {
-    owner: 'Darlene Robertson',
-    email: 'owner001@gmail.com',
-    state: 'Active',
-    clinic: 'Clinic 003',
-    registrationDate: '15 Dec 2024',
-    plan: '1-50 Users',
-    status: 'Owner'
-  },
-  {
-    owner: 'Cody Fisher',
-    email: 'owner001@gmail.com',
-    state: 'Active',
-    clinic: 'Clinic 004',
-    registrationDate: '15 Dec 2024',
-    plan: '1-50 Users',
-    status: 'Owner'
-  },
-  {
-    owner: 'Devon Lane',
-    email: 'owner001@gmail.com',
-    state: 'Active',
-    clinic: 'Clinic 005',
-    registrationDate: '15 Dec 2024',
-    plan: '1-50 Users',
-    status: ''
-  },
-  {
-    owner: 'Ronald Richards',
-    email: 'owner001@gmail.com',
-    state: 'Suspended',
-    clinic: 'Clinic 006',
-    registrationDate: '15 Dec 2024',
-    plan: '1-50 Users',
-    status: 'Owner'
-  },
-  {
-    owner: 'Ronald Richards',
-    email: 'owner001@gmail.com',
-    state: 'Suspended',
-    clinic: 'Clinic 006',
-    registrationDate: '15 Dec 2024',
-    plan: '1-50 Users',
-    status: 'Owner'
-  },
-  {
-    owner: 'Ronald Richards',
-    email: 'owner001@gmail.com',
-    state: 'Suspended',
-    clinic: 'Clinic 006',
-    registrationDate: '15 Dec 2024',
-    plan: '1-50 Users'
-  }
-];
-
 const columnWidths = ['230px', '200px', '200px', '160px', '160px', '160px'];
-
-const newRegistrations = [
-  { email: 'dolores.chambers@example.com', time: '1 hrs ago' },
-  { email: 'nevaeh.simmons@example.com', time: '2 hrs ago' },
-  { email: 'nathan.roberts@example.com', time: '3 hrs ago' },
-  { email: 'jackson.graham@example.com', time: '4 hrs ago' },
-  { email: 'willie.jennings@example.com', time: '5 hrs ago' }
-];
-
-const dataPermission = [
-  { name: 'Floyd Miles', owner: true, permissions: [true, true, true, false, true, true] },
-  { name: 'Darrell Steward', owner: false, permissions: [false, true, false, false, false, false] },
-  { name: 'Cody Fisher', owner: false, permissions: [false, true, false, false, false, false] },
-  { name: 'Jane Cooper', owner: false, permissions: [false, true, false, false, false, false] },
-  { name: 'Jacob Jones', owner: false, permissions: [false, false, false, false, false, false] },
-  { name: 'Darlene Robertson', owner: false, permissions: [false, false, false, true, false, false] },
-  { name: 'Leslie Alexander', owner: false, permissions: [false, false, false, true, false, false] },
-  { name: 'Eleanor Pena', owner: false, permissions: [false, false, false, false, false, false] },
-  { name: 'Cameron Williamson', owner: false, permissions: [false, false, false, false, false, false] },
-  { name: 'Kristin Watson', owner: false, permissions: [false, false, false, false, false, false] }
-];
 
 export function AccountIdView() {
   const router = useRouter();
@@ -227,7 +84,7 @@ export function AccountIdView() {
     isPermission: false
   });
 
-  const filteredData = data.filter((row) => row.owner.toLowerCase().includes(state.search.toLowerCase()));
+  const filteredData = account.filter((row) => row.owner.toLowerCase().includes(state.search.toLowerCase()));
 
   const handleChangePage = (_event: any, newPage: number) => {
     setState({ ...state, page: newPage });
@@ -245,6 +102,8 @@ export function AccountIdView() {
   };
 
   const handleCheckboxChange = (rowIndex: any, colIndex: any) => {
+    console.log('🚀 ~ handleCheckboxChange ~ colIndex:', colIndex);
+    console.log('🚀 ~ handleCheckboxChange ~ rowIndex:', rowIndex);
     // const updatedData = data.map((row, index) => {
     //   if (index === rowIndex) {
     //     const newPermissions = [...row.permissions];
@@ -449,7 +308,7 @@ export function AccountIdView() {
                   <Box maxHeight='444px' overflow='auto'>
                     <Table className='body-table'>
                       <TableBody>
-                        {newRegistrations.map((item, index) => (
+                        {newRegistrationsId.map((item, index) => (
                           <TableRow key={index}>
                             <TableCell>{item.email}</TableCell>
                             <TableCell>{item.time}</TableCell>
@@ -464,10 +323,58 @@ export function AccountIdView() {
           </Box>
         </>
       ) : (
-        <Box display='flex' gap='16px' ml='60px' mb='20px' mt='16px'>
-          <TableContainer component={Paper}>
-            <Box maxHeight='781px' overflow='hidden' bgcolor='#EEEEEE'>
-              <Box padding='24px'>
+        <Box display='flex' gap={3} mt='16px'>
+          <Box flex={3}>
+            <TableContainer component={Paper}>
+              <Box maxHeight='862px' overflow='hidden' bgcolor='#EEEEEE'>
+                <Box padding='0 24px'>
+                  <Table stickyHeader className='header-table'>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell width={columnWidthsPermission[0]}>Name</TableCell>
+                        <TableCell width={columnWidthsPermission[1]}>Create/Edit Role</TableCell>
+                        <TableCell width={columnWidthsPermission[2]}>Add Staff In The Role</TableCell>
+                        <TableCell width={columnWidthsPermission[3]}>Create/Edit Room</TableCell>
+                        <TableCell width={columnWidthsPermission[4]}>Room</TableCell>
+                        <TableCell width={columnWidthsPermission[5]}>Create/Edit Material</TableCell>
+                        <TableCell width={columnWidthsPermission[6]}>Add Material In The Room</TableCell>
+                      </TableRow>
+                    </TableHead>
+                  </Table>
+                </Box>
+
+                <Box maxHeight='700px' overflow='auto' padding='0 24px'>
+                  <Table className='body-table'>
+                    <TableBody>
+                      {dataPermission.map((row, rowIndex) => (
+                        <TableRow key={rowIndex}>
+                          <TableCell width={columnWidthsPermission[0]}>
+                            <Box display='flex' alignItems='center' gap='8px'>
+                              <Typography
+                                noWrap
+                                sx={{ textOverflow: 'ellipsis', overflow: 'hidden', maxWidth: '150px' }}
+                              >
+                                {row.name}
+                              </Typography>
+                              {row.owner && <Chip label='Owner' color='owner' />}
+                            </Box>
+                          </TableCell>
+                          {row.permissions.map((permission, colIndex) => (
+                            <TableCell key={colIndex} align='left' width={columnWidthsPermission[colIndex + 1]}>
+                              <Checkbox
+                                checked={permission}
+                                onChange={() => handleCheckboxChange(rowIndex, colIndex)}
+                              />
+                            </TableCell>
+                          ))}
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </Box>
+              </Box>
+            </TableContainer>
+            {/* <Box padding='24px'>
                 <Table stickyHeader>
                   <TableHead>
                     <TableRow>
@@ -500,9 +407,8 @@ export function AccountIdView() {
                     ))}
                   </TableBody>
                 </Table>
-              </Box>
-            </Box>
-          </TableContainer>
+              </Box> */}
+          </Box>
         </Box>
       )}
     </>

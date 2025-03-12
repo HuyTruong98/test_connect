@@ -23,6 +23,7 @@ import {
 import dayjs, { Dayjs } from 'dayjs';
 import { useState } from 'react';
 import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts';
+import { dashboard, dataChart, newRegistrations } from '../../_mock/data';
 import { CustomDatePicker } from '../../components/date-picker';
 import { CommonDrawer } from '../../components/drawer';
 import { Label } from '../../components/label';
@@ -69,136 +70,6 @@ export function DashboardView() {
     />
   );
 
-  const data = [
-    {
-      owner: 'Floyd Miles',
-      email: 'owner001@gmail.com',
-      state: 'Active',
-      clinic: 'Clinic 001',
-      registrationDate: '15 Dec 2024',
-      plan: '1-50 Users'
-    },
-    {
-      owner: 'Ralph Edwards',
-      email: 'owner001@gmail.com',
-      state: 'Suspended',
-      clinic: 'Clinic 002',
-      registrationDate: '15 Dec 2024',
-      plan: '1-50 Users'
-    },
-    {
-      owner: 'Darlene Robertson',
-      email: 'owner001@gmail.com',
-      state: 'Active',
-      clinic: 'Clinic 003',
-      registrationDate: '15 Dec 2024',
-      plan: '1-50 Users'
-    },
-    {
-      owner: 'Cody Fisher',
-      email: 'owner001@gmail.com',
-      state: 'Active',
-      clinic: 'Clinic 004',
-      registrationDate: '15 Dec 2024',
-      plan: '1-50 Users'
-    },
-    {
-      owner: 'Devon Lane',
-      email: 'owner001@gmail.com',
-      state: 'Active',
-      clinic: 'Clinic 005',
-      registrationDate: '15 Dec 2024',
-      plan: '1-50 Users'
-    },
-    {
-      owner: 'Ronald Richards',
-      email: 'owner001@gmail.com',
-      state: 'Suspended',
-      clinic: 'Clinic 006',
-      registrationDate: '15 Dec 2024',
-      plan: '1-50 Users'
-    },
-    {
-      owner: 'Floyd Miles',
-      email: 'owner001@gmail.com',
-      state: 'Active',
-      clinic: 'Clinic 001',
-      registrationDate: '15 Dec 2024',
-      plan: '1-50 Users'
-    },
-    {
-      owner: 'Ralph Edwards',
-      email: 'owner001@gmail.com',
-      state: 'Suspended',
-      clinic: 'Clinic 002',
-      registrationDate: '15 Dec 2024',
-      plan: '1-50 Users'
-    },
-    {
-      owner: 'Darlene Robertson',
-      email: 'owner001@gmail.com',
-      state: 'Active',
-      clinic: 'Clinic 003',
-      registrationDate: '15 Dec 2024',
-      plan: '1-50 Users'
-    },
-    {
-      owner: 'Cody Fisher',
-      email: 'owner001@gmail.com',
-      state: 'Active',
-      clinic: 'Clinic 004',
-      registrationDate: '15 Dec 2024',
-      plan: '1-50 Users'
-    },
-    {
-      owner: 'Devon Lane',
-      email: 'owner001@gmail.com',
-      state: 'Active',
-      clinic: 'Clinic 005',
-      registrationDate: '15 Dec 2024',
-      plan: '1-50 Users'
-    },
-    {
-      owner: 'Ronald Richards',
-      email: 'owner001@gmail.com',
-      state: 'Suspended',
-      clinic: 'Clinic 006',
-      registrationDate: '15 Dec 2024',
-      plan: '1-50 Users'
-    },
-    {
-      owner: 'Ronald Richards',
-      email: 'owner001@gmail.com',
-      state: 'Suspended',
-      clinic: 'Clinic 006',
-      registrationDate: '15 Dec 2024',
-      plan: '1-50 Users'
-    },
-    {
-      owner: 'Ronald Richards',
-      email: 'owner001@gmail.com',
-      state: 'Suspended',
-      clinic: 'Clinic 006',
-      registrationDate: '15 Dec 2024',
-      plan: '1-50 Users'
-    }
-  ];
-
-  const newRegistrations = [
-    { name: 'Dianne Russell', clinic: 'Clinic 001', status: 'Waiting' },
-    { name: 'Guy Hawkins', clinic: 'Clinic 002', status: 'Waiting' },
-    { name: 'Annette Black', clinic: 'Clinic 003', status: 'Approved' },
-    { name: 'Courtney Henry', clinic: 'Clinic 004', status: 'Refuse' },
-    { name: 'Ralph Edwards', clinic: 'Clinic 005', status: 'Approved' }
-  ];
-
-  const dataChart = [
-    { name: '1-4 users', value: 50, color: '#E87EFC' },
-    { name: '1-10 users', value: 80, color: '#6FDD93' },
-    { name: '1-20 users', value: 60, color: '#FBBF54' },
-    { name: '1-50 users', value: 90, color: '#4A9CFF' }
-  ];
-
   const plans = ['1-4 Users', '1-10 Users', '1-20 Users', '1-50 Users'];
 
   const columnWidths = ['160px', '200px', '200px', '160px', '160px', '160px'];
@@ -215,7 +86,7 @@ export function DashboardView() {
     setState({ ...state, rowsPerPage: parseInt(event.target.value, 10), page: 0 });
   };
 
-  const filteredData = data.filter((row) => row.owner.toLowerCase().includes(state.search.toLowerCase()));
+  const filteredData = dashboard.filter((row) => row.owner.toLowerCase().includes(state.search.toLowerCase()));
 
   const handleFromDateChange = (date: Dayjs | null) => {
     if (!date) return;

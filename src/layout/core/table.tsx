@@ -28,8 +28,13 @@ export function table(): Components<Omit<Theme, 'components'>> {
                   fontWeight: 600,
                   fontSize: '16px',
                   lineHeight: '22px',
-                  paddingLeft: '16px',
-                  paddingRight: '16px'
+
+                  '&:first-child': {
+                    paddingLeft: '16px'
+                  },
+                  '&:last-child': {
+                    paddingRight: '16px'
+                  }
                 }
               }
             }),
@@ -47,7 +52,8 @@ export function table(): Components<Omit<Theme, 'components'>> {
       styleOverrides: {
         root: {
           fontSize: '14px',
-          borderBottom: 'none'
+          borderBottom: 'none',
+          boxSizing: 'border-box'
         },
         head: {
           fontWeight: 600,
@@ -56,7 +62,14 @@ export function table(): Components<Omit<Theme, 'components'>> {
         body: {
           backgroundColor: '#FFF',
           height: '54px',
-          padding: '12px 16px 12px'
+          padding: '12px 0px 12px',
+
+          '&:first-child': {
+            paddingLeft: '16px'
+          },
+          '&:last-child': {
+            paddingRight: '16px'
+          }
         }
       }
     },

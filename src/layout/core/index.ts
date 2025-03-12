@@ -1,4 +1,5 @@
 import { createTheme, ThemeOptions } from '@mui/material/styles';
+import { checkbox } from './checkbox';
 import { chip } from './chip';
 import { iconButton } from './icon-button';
 import { loadingButton } from './loading-button';
@@ -9,6 +10,7 @@ import { tooltip } from './tooltip';
 
 const themeOptions: ThemeOptions = {
   components: {
+    ...checkbox(),
     ...tooltip(),
     ...iconButton(),
     ...textField(),
