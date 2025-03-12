@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import { HeaderBase } from '../core/header-base';
+import { HeaderBase } from './header-base';
 
 export function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (

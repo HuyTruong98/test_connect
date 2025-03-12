@@ -6,6 +6,7 @@ import {
   Card,
   CardContent,
   CardHeader,
+  Checkbox,
   Chip,
   IconButton,
   Paper,
@@ -16,6 +17,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
   Typography
 } from '@mui/material';
 import { useState } from 'react';
@@ -181,6 +183,19 @@ const newRegistrations = [
   { email: 'willie.jennings@example.com', time: '5 hrs ago' }
 ];
 
+const dataPermission = [
+  { name: 'Floyd Miles', owner: true, permissions: [true, true, true, false, true, true] },
+  { name: 'Darrell Steward', owner: false, permissions: [false, true, false, false, false, false] },
+  { name: 'Cody Fisher', owner: false, permissions: [false, true, false, false, false, false] },
+  { name: 'Jane Cooper', owner: false, permissions: [false, true, false, false, false, false] },
+  { name: 'Jacob Jones', owner: false, permissions: [false, false, false, false, false, false] },
+  { name: 'Darlene Robertson', owner: false, permissions: [false, false, false, true, false, false] },
+  { name: 'Leslie Alexander', owner: false, permissions: [false, false, false, true, false, false] },
+  { name: 'Eleanor Pena', owner: false, permissions: [false, false, false, false, false, false] },
+  { name: 'Cameron Williamson', owner: false, permissions: [false, false, false, false, false, false] },
+  { name: 'Kristin Watson', owner: false, permissions: [false, false, false, false, false, false] }
+];
+
 export function AccountIdView() {
   const router = useRouter();
 
@@ -191,6 +206,7 @@ export function AccountIdView() {
     openDrawer: boolean;
     query: IQueryDashBoard;
     appliedQuery: IQueryDashBoard;
+    isPermission: boolean;
   }>({
     search: '',
     page: 0,
@@ -207,7 +223,8 @@ export function AccountIdView() {
       toDate: null,
       planType: [],
       state: 'all'
-    }
+    },
+    isPermission: false
   });
 
   const filteredData = data.filter((row) => row.owner.toLowerCase().includes(state.search.toLowerCase()));
@@ -220,17 +237,28 @@ export function AccountIdView() {
     setState({ ...state, rowsPerPage: parseInt(event.target.value, 10), page: 0 });
   };
 
+  const tooltipTexts = {
+    'envelope-edit': 'Send Email',
+    lock: 'Reset Password',
+    'triangle-exclamation': 'Suspend Clinic',
+    trash: 'Delete Clinic'
+  };
+
+  const handleCheckboxChange = (rowIndex: any, colIndex: any) => {
+    // const updatedData = data.map((row, index) => {
+    //   if (index === rowIndex) {
+    //     const newPermissions = [...row.permissions];
+    //     newPermissions[colIndex] = !newPermissions[colIndex];
+    //     return { ...row, permissions: newPermissions };
+    //   }
+    //   return row;
+    // });
+    // setData(updatedData);
+  };
+
   return (
     <>
-      <Box
-        display='flex'
-        alignItems='center'
-        gap='12px'
-        width='100%'
-        height='48px'
-        justifyContent='space-between'
-        marginBottom='24px'
-      >
+      <Box display='flex' alignItems='center' gap='12px' width='100%' height='48px' justifyContent='space-between'>
         <Box display='flex' alignItems='center' gap='12px' width='100%' height='100%'>
           <IconButton onClick={() => router.push(ROOTS.ACCOUNT)}>
             <ArrowBackIosNewIcon />
@@ -249,173 +277,225 @@ export function AccountIdView() {
           </Button>
         </Box>
       </Box>
+      {!state.isPermission ? (
+        <>
+          <Box display='flex' gap='16px' ml='60px' mb='20px' mt='24px'>
+            <Button
+              variant='outlined'
+              startIcon={<img src='/assets/images/icon/user-settings.svg' alt='user-settings' />}
+              sx={{ height: '48px' }}
+              onClick={() => setState({ ...state, isPermission: true })}
+            >
+              Permission
+            </Button>
+            <Button
+              variant='outlined'
+              startIcon={<img src='/assets/images/icon/invoice.svg' alt='invoice' />}
+              sx={{ height: '48px' }}
+            >
+              Subscriptions
+            </Button>
+          </Box>
 
-      <Box display='flex' gap='16px' ml='60px' mb='20px'>
-        <Button
-          variant='outlined'
-          startIcon={<img src='/assets/images/icon/user-settings.svg' alt='user-settings' />}
-          sx={{ height: '48px' }}
-        >
-          Permission
-        </Button>
-        <Button
-          variant='outlined'
-          startIcon={<img src='/assets/images/icon/invoice.svg' alt='invoice' />}
-          sx={{ height: '48px' }}
-        >
-          Subscriptions
-        </Button>
-      </Box>
+          <Box display='flex' gap='16px'>
+            <Stack spacing={2} alignItems='center' justifyContent='center'>
+              <Tooltip title={tooltipTexts['envelope-edit']} placement='right-start' arrow>
+                <IconButton data-variant='primary'>
+                  <img src='/assets/images/icon/envelope-edit.svg' alt='envelope-edit' />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title={tooltipTexts['lock']} placement='right-start' arrow>
+                <IconButton data-variant='primary'>
+                  <img src='/assets/images/icon/lock.svg' alt='lock' />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title={tooltipTexts['triangle-exclamation']} placement='right-start' arrow>
+                <IconButton data-variant='primary'>
+                  <img src='/assets/images/icon/triangle-exclamation.svg' alt='envelope-edit' />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title={tooltipTexts['trash']} placement='right-start' arrow>
+                <IconButton data-variant='trash'>
+                  <img src='/assets/images/icon/trash.svg' alt='trash' />
+                </IconButton>
+              </Tooltip>
+            </Stack>
 
-      <Box display='flex' gap='16px'>
-        <Stack spacing={2} alignItems='center' justifyContent='center'>
-          <IconButton data-variant='primary'>
-            <img src='/assets/images/icon/envelope-edit.svg' alt='envelope-edit' />
-          </IconButton>
-          <IconButton data-variant='primary'>
-            <img src='/assets/images/icon/lock.svg' alt='lock' />
-          </IconButton>
-          <IconButton data-variant='primary'>
-            <img src='/assets/images/icon/triangle-exclamation.svg' alt='envelope-edit' />
-          </IconButton>
+            <Box flex={3}>
+              <TableContainer component={Paper}>
+                <Box maxHeight='781px' overflow='hidden' bgcolor='#EEEEEE'>
+                  <Box padding='0 24px'>
+                    <Table stickyHeader className='header-table'>
+                      <TableHead>
+                        <TableRow>
+                          <TableCell style={{ width: columnWidths[0] }}>Owner</TableCell>
+                          <TableCell style={{ width: columnWidths[1] }}>Email</TableCell>
+                          <TableCell style={{ width: columnWidths[2] }}>State</TableCell>
+                          <TableCell style={{ width: columnWidths[3] }}>Clinic</TableCell>
+                          <TableCell style={{ width: columnWidths[4] }}>Registration Date</TableCell>
+                          <TableCell style={{ width: columnWidths[5] }}>Plan</TableCell>
+                        </TableRow>
+                      </TableHead>
+                    </Table>
+                  </Box>
 
-          <IconButton data-variant='trash'>
-            <img src='/assets/images/icon/trash.svg' alt='trash' />
-          </IconButton>
-        </Stack>
+                  <Box maxHeight='672px' overflow='auto' padding='0 24px'>
+                    <Table className='body-table'>
+                      <TableBody>
+                        {filteredData
+                          .slice(state.page * state.rowsPerPage, state.page * state.rowsPerPage + state.rowsPerPage)
+                          .map((row, index) => (
+                            <TableRow key={index}>
+                              <TableCell style={{ width: columnWidths[0], whiteSpace: 'nowrap' }}>
+                                <Box display='flex' alignItems='center' gap='8px' overflow='hidden'>
+                                  <Typography
+                                    noWrap
+                                    sx={{ textOverflow: 'ellipsis', overflow: 'hidden', maxWidth: '150px' }}
+                                  >
+                                    {row.owner}
+                                  </Typography>
+                                  {row.status && <Chip label={row.status} color={row.status.toLowerCase() as any} />}
+                                </Box>
+                              </TableCell>
 
-        <Box flex={3}>
+                              <TableCell style={{ width: columnWidths[1] }}>{row.email}</TableCell>
+                              <TableCell style={{ width: columnWidths[2] }}>
+                                <Chip label={row.state} color={row.state.toLowerCase() as any} />
+                              </TableCell>
+                              <TableCell style={{ width: columnWidths[3] }}>{row.clinic}</TableCell>
+                              <TableCell style={{ width: columnWidths[4] }}>{row.registrationDate}</TableCell>
+                              <TableCell style={{ width: columnWidths[5] }}>{row.plan}</TableCell>
+                            </TableRow>
+                          ))}
+                      </TableBody>
+                    </Table>
+                  </Box>
+
+                  <PaginationCommon
+                    totalResults={234}
+                    page={state.page}
+                    rowsPerPage={state.rowsPerPage}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                  />
+                </Box>
+              </TableContainer>
+            </Box>
+
+            <Box flex={1} display='flex' flexDirection='column' gap={2}>
+              <Card
+                sx={{
+                  maxHeight: '354px',
+                  borderRadius: '24px',
+                  background: 'linear-gradient(to right, #FE92ED40 0%, #B39CF640 33%, #83A3F740 66%, #08A6FE40 100%)',
+                  height: '354px',
+                  padding: '16px',
+                  boxShadow: 'none'
+                }}
+              >
+                <CardHeader
+                  title={
+                    <Typography
+                      variant='h6'
+                      fontWeight='600'
+                      color='rgba(46, 47, 49, 1)'
+                      fontSize='18px'
+                      lineHeight='28px'
+                      letterSpacing='2%'
+                    >
+                      Clinic Information
+                    </Typography>
+                  }
+                  sx={{ padding: '0px' }}
+                />
+                <CardContent
+                  sx={{
+                    backgroundColor: 'rgba(255, 255, 255, 1)',
+                    borderRadius: '12px',
+                    mt: '16px',
+                    height: '276px',
+                    px: '16px',
+                    py: '12px',
+                    paddingBottom: '12px'
+                  }}
+                >
+                  <InfoRow label='Clinic Name:' value='Clinic001' />
+                  <InfoRow label='Owner:' value='Floyd Miles' />
+                  <InfoRow label='Email:' value='owner001@gmail.com' isBold />
+                  <InfoRow label='Phone Number:' value='(319) 555-0115' />
+                  <InfoRow label='Registration Date:' value='15 Dec 2024' isBold />
+                  <InfoRow label='Plan Type:' value='1-50 Users' isBold />
+                </CardContent>
+              </Card>
+
+              <TableContainer component={Paper}>
+                <Box maxHeight='415px' overflow='hidden' bgcolor='#EEEEEE' height='410px' padding='16px'>
+                  <Box width='100%' height='40px' display='flex' justifyContent='space-between' alignItems='center'>
+                    <Typography
+                      variant='h6'
+                      fontWeight='600'
+                      color='rgba(46, 47, 49, 1)'
+                      fontSize='18px'
+                      lineHeight='28px'
+                      letterSpacing='2%'
+                    >
+                      New Account
+                    </Typography>
+                    <IconButton data-variant='expand'>
+                      <img src='/assets/images/icon/arrows-expand.svg' alt='Expand Icon' />
+                    </IconButton>
+                  </Box>
+
+                  <Box maxHeight='444px' overflow='auto'>
+                    <Table className='body-table'>
+                      <TableBody>
+                        {newRegistrations.map((item, index) => (
+                          <TableRow key={index}>
+                            <TableCell>{item.email}</TableCell>
+                            <TableCell>{item.time}</TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </Box>
+                </Box>
+              </TableContainer>
+            </Box>
+          </Box>
+        </>
+      ) : (
+        <Box display='flex' gap='16px' ml='60px' mb='20px' mt='16px'>
           <TableContainer component={Paper}>
             <Box maxHeight='781px' overflow='hidden' bgcolor='#EEEEEE'>
-              <Box padding='0 24px'>
-                <Table stickyHeader className='header-table'>
+              <Box padding='24px'>
+                <Table stickyHeader>
                   <TableHead>
                     <TableRow>
-                      <TableCell style={{ width: columnWidths[0] }}>Owner</TableCell>
-                      <TableCell style={{ width: columnWidths[1] }}>Email</TableCell>
-                      <TableCell style={{ width: columnWidths[2] }}>State</TableCell>
-                      <TableCell style={{ width: columnWidths[3] }}>Clinic</TableCell>
-                      <TableCell style={{ width: columnWidths[4] }}>Registration Date</TableCell>
-                      <TableCell style={{ width: columnWidths[5] }}>Plan</TableCell>
+                      <TableCell>Name</TableCell>
+                      <TableCell>Create/Edit Role</TableCell>
+                      <TableCell>Add Staff In The Role</TableCell>
+                      <TableCell>Create/Edit Room</TableCell>
+                      <TableCell>Room</TableCell>
+                      <TableCell>Create/Edit Material</TableCell>
+                      <TableCell>Add Material In The Room</TableCell>
                     </TableRow>
                   </TableHead>
-                </Table>
-              </Box>
-
-              <Box maxHeight='672px' overflow='auto' padding='0 24px'>
-                <Table className='body-table'>
                   <TableBody>
-                    {filteredData
-                      .slice(state.page * state.rowsPerPage, state.page * state.rowsPerPage + state.rowsPerPage)
-                      .map((row, index) => (
-                        <TableRow key={index}>
-                          <TableCell style={{ width: columnWidths[0], whiteSpace: 'nowrap' }}>
-                            <Box display='flex' alignItems='center' gap='8px' overflow='hidden'>
-                              <Typography
-                                noWrap
-                                sx={{ textOverflow: 'ellipsis', overflow: 'hidden', maxWidth: '150px' }}
-                              >
-                                {row.owner}
-                              </Typography>
-                              {row.status && <Chip label={row.status} color={row.status.toLowerCase() as any} />}
-                            </Box>
+                    {dataPermission.map((row, rowIndex) => (
+                      <TableRow key={rowIndex}>
+                        <TableCell>
+                          <Box display='flex' alignItems='center' gap='8px'>
+                            <Typography noWrap sx={{ textOverflow: 'ellipsis', overflow: 'hidden', maxWidth: '150px' }}>
+                              {row.name}
+                            </Typography>
+                            {row.owner && <Chip label='Owner' color='primary' />}
+                          </Box>
+                        </TableCell>
+                        {row.permissions.map((permission, colIndex) => (
+                          <TableCell key={colIndex} align='center'>
+                            <Checkbox checked={permission} onChange={() => handleCheckboxChange(rowIndex, colIndex)} />
                           </TableCell>
-
-                          <TableCell style={{ width: columnWidths[1] }}>{row.email}</TableCell>
-                          <TableCell style={{ width: columnWidths[2] }}>
-                            <Chip label={row.state} color={row.state.toLowerCase() as any} />
-                          </TableCell>
-                          <TableCell style={{ width: columnWidths[3] }}>{row.clinic}</TableCell>
-                          <TableCell style={{ width: columnWidths[4] }}>{row.registrationDate}</TableCell>
-                          <TableCell style={{ width: columnWidths[5] }}>{row.plan}</TableCell>
-                        </TableRow>
-                      ))}
-                  </TableBody>
-                </Table>
-              </Box>
-
-              <PaginationCommon
-                totalResults={234}
-                page={state.page}
-                rowsPerPage={state.rowsPerPage}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-              />
-            </Box>
-          </TableContainer>
-        </Box>
-
-        <Box flex={1} display='flex' flexDirection='column' gap={2}>
-          <Card
-            sx={{
-              maxHeight: '354px',
-              borderRadius: '24px',
-              background: 'linear-gradient(to right, #FE92ED40 0%, #B39CF640 33%, #83A3F740 66%, #08A6FE40 100%)',
-              height: '354px',
-              padding: '16px',
-              boxShadow: 'none'
-            }}
-          >
-            <CardHeader
-              title={
-                <Typography
-                  variant='h6'
-                  fontWeight='600'
-                  color='rgba(46, 47, 49, 1)'
-                  fontSize='18px'
-                  lineHeight='28px'
-                  letterSpacing='2%'
-                >
-                  Clinic Information
-                </Typography>
-              }
-              sx={{ padding: '0px' }}
-            />
-            <CardContent
-              sx={{
-                backgroundColor: 'rgba(255, 255, 255, 1)',
-                borderRadius: '12px',
-                mt: '16px',
-                height: '276px',
-                px: '16px',
-                py: '12px',
-                paddingBottom: '12px'
-              }}
-            >
-              <InfoRow label='Clinic Name:' value='Clinic001' />
-              <InfoRow label='Owner:' value='Floyd Miles' />
-              <InfoRow label='Email:' value='owner001@gmail.com' isBold />
-              <InfoRow label='Phone Number:' value='(319) 555-0115' />
-              <InfoRow label='Registration Date:' value='15 Dec 2024' isBold />
-              <InfoRow label='Plan Type:' value='1-50 Users' isBold />
-            </CardContent>
-          </Card>
-
-          <TableContainer component={Paper}>
-            <Box maxHeight='415px' overflow='hidden' bgcolor='#EEEEEE' height='410px' padding='16px'>
-              <Box width='100%' height='40px' display='flex' justifyContent='space-between' alignItems='center'>
-                <Typography
-                  variant='h6'
-                  fontWeight='600'
-                  color='rgba(46, 47, 49, 1)'
-                  fontSize='18px'
-                  lineHeight='28px'
-                  letterSpacing='2%'
-                >
-                  New Account
-                </Typography>
-                <IconButton data-variant='expand'>
-                  <img src='/assets/images/icon/arrows-expand.svg' alt='Expand Icon' />
-                </IconButton>
-              </Box>
-
-              <Box maxHeight='444px' overflow='auto'>
-                <Table className='body-table'>
-                  <TableBody>
-                    {newRegistrations.map((item, index) => (
-                      <TableRow key={index}>
-                        <TableCell>{item.email}</TableCell>
-                        <TableCell>{item.time}</TableCell>
+                        ))}
                       </TableRow>
                     ))}
                   </TableBody>
@@ -424,7 +504,7 @@ export function AccountIdView() {
             </Box>
           </TableContainer>
         </Box>
-      </Box>
+      )}
     </>
   );
 }
