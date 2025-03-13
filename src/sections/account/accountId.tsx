@@ -26,8 +26,25 @@ import PaginationCommon from '../../components/pagination-common/pagination';
 import { useRouter } from '../../routers/hooks';
 import { ROOTS } from '../../routers/paths';
 import { IQueryDashBoard } from '../../types/dashboard';
+import Modal from '../../components/modal/Modal';
+import CloseIcon from '@mui/icons-material/Close';
+import { Label } from '../../components/label';
+import { Field, Form } from '../../components/hook-form';
+import { z as zod } from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+export type SendEmailSchemaType = zod.infer<typeof SendEmailSchema>;
 
 const columnWidthsPermission = ['320px', '200px', '200px', '200px', '200px', '200px', '200px'];
+
+export const SendEmailSchema = zod.object({
+  subject: zod.string().min(1, { message: 'Subject is required!' })
+});
+
+const defaultValues = {
+  subject: ''
+};
 
 const InfoRow = ({ label, value }: { label: string; value: string; isBold?: boolean }) => (
   <Box
@@ -55,21 +72,29 @@ const columnWidths = ['230px', '200px', '200px', '160px', '160px', '160px'];
 
 export function AccountIdView() {
   const router = useRouter();
+  const methods = useForm<SendEmailSchemaType>({
+    resolver: zodResolver(SendEmailSchema),
+    defaultValues
+  });
+
+  const {
+    handleSubmit,
+    formState: { isSubmitting }
+  } = methods;
 
   const [state, setState] = useState<{
     search: string;
     page: number;
     rowsPerPage: number;
-    openDrawer: boolean;
     query: IQueryDashBoard;
     appliedQuery: IQueryDashBoard;
     isPermission: boolean;
     dataPermission: any[];
+    isOpenModalSendEmail: boolean;
   }>({
     search: '',
     page: 0,
     rowsPerPage: 10,
-    openDrawer: false,
     query: {
       fromDate: null,
       toDate: null,
@@ -83,7 +108,8 @@ export function AccountIdView() {
       state: 'all'
     },
     isPermission: false,
-    dataPermission: dataPermission
+    dataPermission: dataPermission,
+    isOpenModalSendEmail: false
   });
 
   const filteredData = account.filter((row) => row.owner.toLowerCase().includes(state.search.toLowerCase()));
@@ -114,6 +140,10 @@ export function AccountIdView() {
     });
     setState({ ...state, dataPermission: updatedData });
   };
+
+  const onSubmit = handleSubmit(async (data) => {
+    console.log('🚀 ~ onSubmit ~ data:', data);
+  });
 
   return (
     <>
@@ -159,7 +189,7 @@ export function AccountIdView() {
           <Box display='flex' gap='16px'>
             <Stack spacing={2} alignItems='center' justifyContent='center'>
               <Tooltip title={tooltipTexts['envelope-edit']} placement='right-start' arrow>
-                <IconButton data-variant='primary'>
+                <IconButton data-variant='primary' onClick={() => setState({ ...state, isOpenModalSendEmail: true })}>
                   <img src='/assets/images/icon/envelope-edit.svg' alt='envelope-edit' />
                 </IconButton>
               </Tooltip>
@@ -242,16 +272,7 @@ export function AccountIdView() {
             </Box>
 
             <Box flex={1} display='flex' flexDirection='column' gap={2}>
-              <Card
-                sx={{
-                  maxHeight: '354px',
-                  borderRadius: '24px',
-                  background: 'linear-gradient(to right, #FE92ED40 0%, #B39CF640 33%, #83A3F740 66%, #08A6FE40 100%)',
-                  height: '354px',
-                  padding: '16px',
-                  boxShadow: 'none'
-                }}
-              >
+              <Card className='clinic-info-card'>
                 <CardHeader
                   title={
                     <Typography
@@ -265,19 +286,9 @@ export function AccountIdView() {
                       Clinic Information
                     </Typography>
                   }
-                  sx={{ padding: '0px' }}
+                  className='clinic-info-card-header'
                 />
-                <CardContent
-                  sx={{
-                    backgroundColor: 'rgba(255, 255, 255, 1)',
-                    borderRadius: '12px',
-                    mt: '16px',
-                    height: '276px',
-                    px: '16px',
-                    py: '12px',
-                    paddingBottom: '12px'
-                  }}
-                >
+                <CardContent className='clinic-info-card-content'>
                   <InfoRow label='Clinic Name:' value='Clinic001' />
                   <InfoRow label='Owner:' value='Floyd Miles' />
                   <InfoRow label='Email:' value='owner001@gmail.com' isBold />
@@ -380,6 +391,75 @@ export function AccountIdView() {
           </Box>
         </Box>
       )}
+
+      <Modal
+        open={state.isOpenModalSendEmail}
+        onClose={() => {
+          setState({ ...state, isOpenModalSendEmail: false });
+        }}
+        sx={{
+          padding: '20px 24px 21px'
+        }}
+      >
+        <Form methods={methods} onSubmit={onSubmit}>
+          <Modal.Title
+            component='div'
+            sx={{
+              width: '100%',
+              height: '104px',
+              display: 'flex',
+              alignItems: 'center',
+              paddingLeft: '20px',
+              paddingRight: '20px',
+              pb: '32px',
+              pt: '24px'
+            }}
+          >
+            <Box display='flex' justifyContent='space-between' alignItems='center' width='100%'>
+              <Typography
+                variant='h6'
+                fontWeight={600}
+                fontSize='24px'
+                lineHeight='28px'
+                letterSpacing='2%'
+                color='rgba(46, 47, 49, 1)'
+              >
+                Send Email
+              </Typography>
+              <IconButton data-variant='init' onClick={() => setState({ ...state, isOpenModalSendEmail: false })}>
+                <CloseIcon />
+              </IconButton>
+            </Box>
+          </Modal.Title>
+          <Modal.Content
+            sx={{
+              width: 600,
+              height: '508px',
+              px: '20px',
+              pb: '0px'
+            }}
+          >
+            <Label required label='Subject'>
+              <Field.Text name='subject' type='text' InputLabelProps={{ shrink: true }} />
+            </Label>
+          </Modal.Content>
+          <Modal.Actions sx={{ padding: '32px 20px 24px' }}>
+            <Button variant='outlined' sx={{ width: '292px', height: '40px', borderRadius: '999px' }}>
+              Clear
+            </Button>
+            <Button
+              variant='outlined'
+              color='inherit'
+              className='loading-button'
+              sx={{ width: '292px', height: '40px', borderRadius: '999px' }}
+              loading={isSubmitting}
+              loadingIndicator='Apply...'
+            >
+              Apply
+            </Button>
+          </Modal.Actions>
+        </Form>
+      </Modal>
     </>
   );
 }

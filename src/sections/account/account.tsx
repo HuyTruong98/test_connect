@@ -206,7 +206,7 @@ export function AccountView() {
             }
           }}
         />
-        <IconButton onClick={() => setState({ ...state, openDrawer: true })}>
+        <IconButton data-variant='init' onClick={() => setState({ ...state, openDrawer: true })}>
           <Tune />
         </IconButton>
 

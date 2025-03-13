@@ -1,4 +1,5 @@
 import { createTheme, ThemeOptions } from '@mui/material/styles';
+import { card } from './card';
 import { checkbox } from './checkbox';
 import { chip } from './chip';
 import { iconButton } from './icon-button';
@@ -17,7 +18,8 @@ const themeOptions: ThemeOptions = {
     ...pagination(),
     ...chip(),
     ...loadingButton(),
-    ...checkbox()
+    ...checkbox(),
+    ...card()
   }
 };
 

@@ -35,7 +35,7 @@ export function CommonDrawer({ open, onClose, title, children, actions, anchor, 
         >
           {title}
         </Typography>
-        <IconButton onClick={onClose}>
+        <IconButton onClick={onClose} data-variant='init'>
           <CloseIcon />
         </IconButton>
       </Box>

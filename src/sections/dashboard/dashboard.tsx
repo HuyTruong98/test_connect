@@ -195,6 +195,11 @@ export function DashboardView() {
                   key={index}
                   control={<Checkbox checked={state.query.planType.includes(plan)} onChange={handleChangePlan(plan)} />}
                   label={plan}
+                  sx={{
+                    gap: '10px',
+                    height: '40px',
+                    mt: '8px'
+                  }}
                 />
               ))}
             </Stack>
@@ -256,7 +261,7 @@ export function DashboardView() {
             }
           }}
         />
-        <IconButton onClick={() => setState({ ...state, openDrawer: true })}>
+        <IconButton data-variant='init' onClick={() => setState({ ...state, openDrawer: true })}>
           <Tune />
         </IconButton>
 
