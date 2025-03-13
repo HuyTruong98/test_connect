@@ -8,12 +8,10 @@ export function HeaderBase() {
   const pathname = usePathname();
 
   return (
-    <AppBar position='fixed' color='inherit' elevation={0} sx={{ zIndex: 1 }}>
+    <AppBar position='static' color='inherit' elevation={0}>
       <Toolbar sx={{ justifyContent: 'space-between', px: '40px !important', height: '88px' }}>
-        {/* Logo */}
         <img src='/logo/logo.png' alt='Logo' style={{ height: '26px' }} />
 
-        {/* Navigation */}
         <Box display='flex' gap='16px'>
           <Button
             variant={pathname === ROOTS.DASHBOARD ? 'contained' : 'text'}
@@ -37,7 +35,6 @@ export function HeaderBase() {
           </Button>
         </Box>
 
-        {/* Icons */}
         <Box display='flex' gap='16px' alignItems='center'>
           <IconButton>
             <NotificationsIcon />

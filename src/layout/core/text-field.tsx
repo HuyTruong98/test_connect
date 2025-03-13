@@ -5,6 +5,27 @@ export function textField(): Components<Omit<Theme, 'components'>> {
     MuiTextField: {
       styleOverrides: {
         root: {
+          '&[class*="textarea"] .MuiOutlinedInput-root': {
+            borderRadius: '8px',
+            background: 'white',
+            height: '156px',
+            padding: '0px',
+
+            '&:hover .MuiOutlinedInput-notchedOutline': {
+              borderColor: 'rgba(64, 64, 64, 1)'
+            },
+            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+              borderColor: 'rgba(64, 64, 64, 1)',
+              borderWidth: '1px !important'
+            },
+            '&.Mui-focused': {
+              boxShadow: 'none !important'
+            },
+            '& .MuiInputBase-input': {
+              height: '100% !important'
+            }
+          },
+
           '&.MuiTextField-selectCustom': {
             '& .MuiOutlinedInput-root': {
               height: '32px',

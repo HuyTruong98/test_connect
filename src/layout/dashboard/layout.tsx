@@ -3,12 +3,11 @@ import { HeaderBase } from './header-base';
 
 export function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
-    <Box height='100%' width='100%' overflow='auto'>
+    <>
       <HeaderBase />
-
-      <Box marginTop='100px' px='40px' paddingBottom='40px'>
+      <Box px='40px' paddingBottom='40px' height='calc(100% - 88px)' overflow='auto'>
         {children}
       </Box>
-    </Box>
+    </>
   );
 }

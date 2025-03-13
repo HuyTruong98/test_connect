@@ -5,6 +5,7 @@ import { chip } from './chip';
 import { iconButton } from './icon-button';
 import { loadingButton } from './loading-button';
 import { pagination } from './pagination';
+import { radio } from './radio';
 import { table } from './table';
 import { textField } from './text-field';
 import { tooltip } from './tooltip';
@@ -19,6 +20,7 @@ const themeOptions: ThemeOptions = {
     ...chip(),
     ...loadingButton(),
     ...checkbox(),
+    ...radio(),
     ...card()
   }
 };

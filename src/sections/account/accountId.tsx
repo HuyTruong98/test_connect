@@ -1,4 +1,6 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import CloseIcon from '@mui/icons-material/Close';
 import GppGoodOutlinedIcon from '@mui/icons-material/GppGoodOutlined';
 import {
   Box,
@@ -18,32 +20,36 @@ import {
   TableHead,
   TableRow,
   Tooltip,
-  Typography
+  Typography,
+  Link,
+  RadioGroup,
+  Radio,
+  FormControlLabel
 } from '@mui/material';
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z as zod } from 'zod';
 import { account, dataPermission, newRegistrationsId } from '../../_mock/data';
+import { Field, Form } from '../../components/hook-form';
+import { Label } from '../../components/label';
+import Modal from '../../components/modal/Modal';
 import PaginationCommon from '../../components/pagination-common/pagination';
 import { useRouter } from '../../routers/hooks';
 import { ROOTS } from '../../routers/paths';
 import { IQueryDashBoard } from '../../types/dashboard';
-import Modal from '../../components/modal/Modal';
-import CloseIcon from '@mui/icons-material/Close';
-import { Label } from '../../components/label';
-import { Field, Form } from '../../components/hook-form';
-import { z as zod } from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 
 export type SendEmailSchemaType = zod.infer<typeof SendEmailSchema>;
 
 const columnWidthsPermission = ['320px', '200px', '200px', '200px', '200px', '200px', '200px'];
 
 export const SendEmailSchema = zod.object({
-  subject: zod.string().min(1, { message: 'Subject is required!' })
+  subject: zod.string().min(1, { message: 'Subject is required!' }),
+  direction: zod.string().min(1, { message: 'Subject is required!' })
 });
 
 const defaultValues = {
-  subject: ''
+  subject: '',
+  direction: ''
 };
 
 const InfoRow = ({ label, value }: { label: string; value: string; isBold?: boolean }) => (
@@ -91,6 +97,7 @@ export function AccountIdView() {
     isPermission: boolean;
     dataPermission: any[];
     isOpenModalSendEmail: boolean;
+    fileName: string | null;
   }>({
     search: '',
     page: 0,
@@ -109,7 +116,8 @@ export function AccountIdView() {
     },
     isPermission: false,
     dataPermission: dataPermission,
-    isOpenModalSendEmail: false
+    isOpenModalSendEmail: false,
+    fileName: null
   });
 
   const filteredData = account.filter((row) => row.owner.toLowerCase().includes(state.search.toLowerCase()));
@@ -144,6 +152,14 @@ export function AccountIdView() {
   const onSubmit = handleSubmit(async (data) => {
     console.log('🚀 ~ onSubmit ~ data:', data);
   });
+
+  const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    const file = event.dataTransfer.files[0];
+    if (file) {
+      console.log('🚀 ~ handleDrop ~ file:', file);
+    }
+  };
 
   return (
     <>
@@ -434,26 +450,148 @@ export function AccountIdView() {
           <Modal.Content
             sx={{
               width: 600,
-              height: '508px',
+              height: '520px',
               px: '20px',
-              pb: '0px'
+              pb: '0px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '8px'
             }}
           >
-            <Label required label='Subject'>
+            <Label
+              required
+              label='Subject'
+              styles={{
+                fontWeight: 600,
+                fontSize: '16px',
+                lineHeight: '24px'
+              }}
+            >
               <Field.Text name='subject' type='text' InputLabelProps={{ shrink: true }} />
             </Label>
+            <Label
+              required
+              label='Direction'
+              styles={{
+                fontWeight: 600,
+                fontSize: '16px',
+                lineHeight: '24px'
+              }}
+            >
+              <Field.Text
+                name='direction'
+                type='text'
+                InputLabelProps={{ shrink: true }}
+                multiline
+                rows={4}
+                className='textarea'
+              />
+            </Label>
+            <Label
+              label='Attachments'
+              styles={{
+                fontWeight: 600,
+                fontSize: '16px',
+                lineHeight: '24px'
+              }}
+            >
+              <Box
+                onDragOver={(e) => e.preventDefault()}
+                onDrop={handleDrop}
+                sx={{
+                  mt: 1,
+                  border: '1px dashed #404040',
+                  borderRadius: '12px',
+                  height: '120px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  textAlign: 'center',
+                  position: 'relative'
+                }}
+              >
+                <input
+                  type='file'
+                  id='file-upload'
+                  style={{ display: 'none' }}
+                  onChange={(event) => {
+                    const file = event.target.files?.[0];
+                    if (file) {
+                      console.log('🚀 ~ AccountIdView ~ file:', file);
+                      // setFileName(file.name);
+                    }
+                  }}
+                />
+                <img src='/assets/images/icon/upload.svg' alt='upload' style={{ marginBottom: '12px' }} />
+                {state.fileName ? (
+                  <Typography fontSize='14px' color='textSecondary' fontWeight={400} lineHeight='22px'>
+                    {state.fileName}
+                  </Typography>
+                ) : (
+                  <Typography fontSize='14px' color='textSecondary' fontWeight={400} lineHeight='22px'>
+                    Drag and drop to upload or{' '}
+                    <label htmlFor='file-upload'>
+                      <Link
+                        component='span'
+                        sx={{
+                          cursor: 'pointer',
+                          background: 'linear-gradient(to right, #46B8F8, #0674DB)',
+                          WebkitBackgroundClip: 'text',
+                          WebkitTextFillColor: 'transparent',
+                          fontWeight: '400',
+                          fontSize: '14px',
+                          lineHeight: '22px',
+                          textDecoration: 'none'
+                        }}
+                      >
+                        browse for files
+                      </Link>
+                    </label>
+                  </Typography>
+                )}
+              </Box>
+            </Label>
+            <RadioGroup
+              row
+              defaultValue='clinicOwner'
+              sx={{
+                display: 'flex',
+                width: '100%',
+                alignItems: 'center',
+                flexWrap: 'nowrap',
+                gap: '24px',
+                height: '24px'
+              }}
+            >
+              <FormControlLabel
+                value='clinicOwner'
+                control={<Radio />}
+                sx={{ width: '50%', ml: '0px', fontWeight: 400, fontSize: '16px', mr: '0px', height: '100%' }}
+                label='Only Clinic Owner'
+              />
+              <FormControlLabel
+                value='clinicStaff'
+                control={<Radio />}
+                label='All Clinic Staff'
+                sx={{ width: '50%', fontWeight: 400, fontSize: '16px', mr: '0px', height: '100%' }}
+              />
+            </RadioGroup>
           </Modal.Content>
           <Modal.Actions sx={{ padding: '32px 20px 24px' }}>
             <Button variant='outlined' sx={{ width: '292px', height: '40px', borderRadius: '999px' }}>
               Clear
             </Button>
             <Button
-              variant='outlined'
+              fullWidth
               color='inherit'
-              className='loading-button'
-              sx={{ width: '292px', height: '40px', borderRadius: '999px' }}
+              size='large'
+              type='submit'
               loading={isSubmitting}
               loadingIndicator='Apply...'
+              sx={{ width: '292px', height: '40px', borderRadius: '999px' }}
+              className='loading-button'
+              variant='outlined'
             >
               Apply
             </Button>

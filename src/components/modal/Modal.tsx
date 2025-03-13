@@ -28,17 +28,7 @@ const Title = ({ sx, ...rest }: DialogTitleProps) => (
 );
 
 const ActionButton = ({ color, sx, ...rest }: {} & ButtonProps) => (
-  <Button
-    disableTouchRipple
-    color={color || 'primary'}
-    sx={{
-      ...sx
-      // '&.MuiButtonBase-root': {
-      //   fontSize: '14px'
-      // }
-    }}
-    {...rest}
-  />
+  <Button disableTouchRipple color={color || 'primary'} sx={{ ...sx }} {...rest} />
 );
 
 ActionButton.defaultProps = {

@@ -20,9 +20,15 @@ export const Label: React.FC<LabelProps> = ({ label, children, styles, labelWidt
           marginBottom: '8px',
           height: '22px',
           color: '#404040',
+          '&::after': required
+            ? {
+                content: '"*"',
+                color: '#E84349',
+                pl: '4px'
+              }
+            : {},
           ...styles
         }}
-        required={required}
       >
         {label}
       </InputLabel>
