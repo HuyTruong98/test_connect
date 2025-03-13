@@ -29,10 +29,10 @@ export function table(): Components<Omit<Theme, 'components'>> {
                   fontSize: '16px',
                   lineHeight: '22px',
 
-                  '&:first-child': {
+                  '&:first-of-type': {
                     paddingLeft: '16px'
                   },
-                  '&:last-child': {
+                  '&:last-of-type': {
                     paddingRight: '16px'
                   }
                 }
@@ -64,10 +64,10 @@ export function table(): Components<Omit<Theme, 'components'>> {
           height: '54px',
           padding: '12px 0px 12px',
 
-          '&:first-child': {
+          '&:first-of-type': {
             paddingLeft: '16px'
           },
-          '&:last-child': {
+          '&:last-of-type': {
             paddingRight: '16px'
           }
         }

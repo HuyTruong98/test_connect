@@ -232,12 +232,12 @@ export function AccountView() {
                 <Table stickyHeader className='header-table'>
                   <TableHead>
                     <TableRow>
-                      <TableCell style={{ width: columnWidths[0] }}>Owner</TableCell>
-                      <TableCell style={{ width: columnWidths[1] }}>Email</TableCell>
-                      <TableCell style={{ width: columnWidths[2] }}>State</TableCell>
-                      <TableCell style={{ width: columnWidths[3] }}>Clinic</TableCell>
-                      <TableCell style={{ width: columnWidths[4] }}>Registration Date</TableCell>
-                      <TableCell style={{ width: columnWidths[5] }}>Plan</TableCell>
+                      <TableCell width={columnWidths[0]}>Owner</TableCell>
+                      <TableCell width={columnWidths[1]}>Email</TableCell>
+                      <TableCell width={columnWidths[2]}>State</TableCell>
+                      <TableCell width={columnWidths[3]}>Clinic</TableCell>
+                      <TableCell width={columnWidths[4]}>Registration Date</TableCell>
+                      <TableCell width={columnWidths[5]}>Plan</TableCell>
                     </TableRow>
                   </TableHead>
                 </Table>
@@ -250,7 +250,7 @@ export function AccountView() {
                       .slice(state.page * state.rowsPerPage, state.page * state.rowsPerPage + state.rowsPerPage)
                       .map((row, index) => (
                         <TableRow key={index}>
-                          <TableCell style={{ width: columnWidths[0], whiteSpace: 'nowrap' }}>
+                          <TableCell sx={{ width: columnWidths[0], whiteSpace: 'nowrap' }}>
                             <Box display='flex' alignItems='center' gap='8px' overflow='hidden'>
                               <Typography
                                 noWrap
@@ -262,13 +262,13 @@ export function AccountView() {
                             </Box>
                           </TableCell>
 
-                          <TableCell style={{ width: columnWidths[1] }}>{row.email}</TableCell>
-                          <TableCell style={{ width: columnWidths[2] }}>
+                          <TableCell width={columnWidths[1]}>{row.email}</TableCell>
+                          <TableCell width={columnWidths[2]}>
                             <Chip label={row.state} color={row.state.toLowerCase() as any} />
                           </TableCell>
-                          <TableCell style={{ width: columnWidths[3] }}>{row.clinic}</TableCell>
-                          <TableCell style={{ width: columnWidths[4] }}>{row.registrationDate}</TableCell>
-                          <TableCell style={{ width: columnWidths[5] }}>{row.plan}</TableCell>
+                          <TableCell width={columnWidths[3]}>{row.clinic}</TableCell>
+                          <TableCell width={columnWidths[4]}>{row.registrationDate}</TableCell>
+                          <TableCell width={columnWidths[5]}>{row.plan}</TableCell>
                         </TableRow>
                       ))}
                   </TableBody>

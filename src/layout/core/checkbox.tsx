@@ -5,34 +5,64 @@ export function checkbox(): Components<Omit<Theme, 'components'>> {
     MuiCheckbox: {
       styleOverrides: {
         root: {
-          width: 24,
-          height: 24,
+          width: '18px',
+          height: '18px',
           padding: 0,
+          borderRadius: '3px',
+          overflow: 'hidden',
           position: 'relative',
-          borderRadius: 4,
+          backgroundColor: '#fff',
+          border: '2px solid #404040',
 
-          '&.Mui-checked': {
-            color: '#fff' // Giữ màu trắng cho icon check
+          '&:not(.Mui-checked):hover': {
+            background: 'linear-gradient(to right, #fe92ed, #b39cf6, #83a3f7, #08a6fe)',
+            border: 'none'
           },
 
-          '&.Mui-checked::before': {
-            content: '""',
-            position: 'absolute',
-            top: 0,
-            left: 0,
+          '&.Mui-checked': {
+            background: 'linear-gradient(to right, #fe92ed, #b39cf6, #83a3f7, #08a6fe)',
+            border: 'none',
+            '&:hover': {
+              background: 'linear-gradient(to right, #fe92ed, #b39cf6, #83a3f7, #08a6fe)',
+              border: 'none'
+            }
+          },
+
+          '&.Mui-disabled': {
+            background: 'linear-gradient(to right, #FE92ED40 0%, #B39CF640 33%, #83A3F740 66%, #08A6FE40 100%)', // Gradient mờ cho disabled
+            border: 'none',
+            cursor: 'not-allowed'
+          },
+
+          '&.Mui-disabled .MuiSvgIcon-root': {
+            backgroundImage: `url('/assets/images/icon/checkmark.svg')`,
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center'
+          },
+
+          '& .MuiSvgIcon-root': {
             width: '100%',
             height: '100%',
-            background: 'linear-gradient(to right, #fe92ed, #b39cf6, #83a3f7, #08a6fe)',
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            fill: 'transparent',
+            backgroundImage: `url('/assets/images/icon/checkmark.svg')`,
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat'
+          },
 
-            borderRadius: 4,
-            zIndex: -1 // Đưa gradient xuống dưới icon check
-          }
-        },
+          '&.Mui-checked .MuiSvgIcon-root': {
+            fill: 'transparent',
+            backgroundImage: `url('/assets/images/icon/checkmark.svg')`,
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat'
+          },
 
-        checked: {
-          '& .MuiSvgIcon-root': {
-            fontSize: 18, // Giữ icon không bị quá to
-            color: '#fff !important' // Dấu check vẫn là trắng
+          '& .MuiTouchRipple-root': {
+            display: 'none'
           }
         }
       }

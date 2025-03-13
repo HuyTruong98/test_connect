@@ -21,11 +21,11 @@ import {
   Typography
 } from '@mui/material';
 import { useState } from 'react';
+import { account, dataPermission, newRegistrationsId } from '../../_mock/data';
 import PaginationCommon from '../../components/pagination-common/pagination';
 import { useRouter } from '../../routers/hooks';
 import { ROOTS } from '../../routers/paths';
 import { IQueryDashBoard } from '../../types/dashboard';
-import { account, dataPermission, newRegistrationsId } from '../../_mock/data';
 
 const columnWidthsPermission = ['320px', '200px', '200px', '200px', '200px', '200px', '200px'];
 
@@ -64,6 +64,7 @@ export function AccountIdView() {
     query: IQueryDashBoard;
     appliedQuery: IQueryDashBoard;
     isPermission: boolean;
+    dataPermission: any[];
   }>({
     search: '',
     page: 0,
@@ -81,7 +82,8 @@ export function AccountIdView() {
       planType: [],
       state: 'all'
     },
-    isPermission: false
+    isPermission: false,
+    dataPermission: dataPermission
   });
 
   const filteredData = account.filter((row) => row.owner.toLowerCase().includes(state.search.toLowerCase()));
@@ -101,18 +103,16 @@ export function AccountIdView() {
     trash: 'Delete Clinic'
   };
 
-  const handleCheckboxChange = (rowIndex: any, colIndex: any) => {
-    console.log('🚀 ~ handleCheckboxChange ~ colIndex:', colIndex);
-    console.log('🚀 ~ handleCheckboxChange ~ rowIndex:', rowIndex);
-    // const updatedData = data.map((row, index) => {
-    //   if (index === rowIndex) {
-    //     const newPermissions = [...row.permissions];
-    //     newPermissions[colIndex] = !newPermissions[colIndex];
-    //     return { ...row, permissions: newPermissions };
-    //   }
-    //   return row;
-    // });
-    // setData(updatedData);
+  const handleCheckboxChange = (rowIndex: number, colIndex: number) => {
+    const updatedData = state.dataPermission.map((row, index) => {
+      if (index === rowIndex) {
+        const newPermissions = [...row.permissions];
+        newPermissions[colIndex] = !newPermissions[colIndex];
+        return { ...row, permissions: newPermissions };
+      }
+      return row;
+    });
+    setState({ ...state, dataPermission: updatedData });
   };
 
   return (
@@ -187,12 +187,12 @@ export function AccountIdView() {
                     <Table stickyHeader className='header-table'>
                       <TableHead>
                         <TableRow>
-                          <TableCell style={{ width: columnWidths[0] }}>Owner</TableCell>
-                          <TableCell style={{ width: columnWidths[1] }}>Email</TableCell>
-                          <TableCell style={{ width: columnWidths[2] }}>State</TableCell>
-                          <TableCell style={{ width: columnWidths[3] }}>Clinic</TableCell>
-                          <TableCell style={{ width: columnWidths[4] }}>Registration Date</TableCell>
-                          <TableCell style={{ width: columnWidths[5] }}>Plan</TableCell>
+                          <TableCell width={columnWidths[0]}>Owner</TableCell>
+                          <TableCell width={columnWidths[1]}>Email</TableCell>
+                          <TableCell width={columnWidths[2]}>State</TableCell>
+                          <TableCell width={columnWidths[3]}>Clinic</TableCell>
+                          <TableCell width={columnWidths[4]}>Registration Date</TableCell>
+                          <TableCell width={columnWidths[5]}>Plan</TableCell>
                         </TableRow>
                       </TableHead>
                     </Table>
@@ -217,13 +217,13 @@ export function AccountIdView() {
                                 </Box>
                               </TableCell>
 
-                              <TableCell style={{ width: columnWidths[1] }}>{row.email}</TableCell>
-                              <TableCell style={{ width: columnWidths[2] }}>
+                              <TableCell width={columnWidths[1]}>{row.email}</TableCell>
+                              <TableCell width={columnWidths[2]}>
                                 <Chip label={row.state} color={row.state.toLowerCase() as any} />
                               </TableCell>
-                              <TableCell style={{ width: columnWidths[3] }}>{row.clinic}</TableCell>
-                              <TableCell style={{ width: columnWidths[4] }}>{row.registrationDate}</TableCell>
-                              <TableCell style={{ width: columnWidths[5] }}>{row.plan}</TableCell>
+                              <TableCell width={columnWidths[3]}>{row.clinic}</TableCell>
+                              <TableCell width={columnWidths[4]}>{row.registrationDate}</TableCell>
+                              <TableCell width={columnWidths[5]}>{row.plan}</TableCell>
                             </TableRow>
                           ))}
                       </TableBody>
@@ -346,24 +346,27 @@ export function AccountIdView() {
                 <Box maxHeight='700px' overflow='auto' padding='0 24px'>
                   <Table className='body-table'>
                     <TableBody>
-                      {dataPermission.map((row, rowIndex) => (
+                      {state.dataPermission.map((row, rowIndex) => (
                         <TableRow key={rowIndex}>
                           <TableCell width={columnWidthsPermission[0]}>
                             <Box display='flex' alignItems='center' gap='8px'>
                               <Typography
                                 noWrap
-                                sx={{ textOverflow: 'ellipsis', overflow: 'hidden', maxWidth: '150px' }}
+                                overflow='hidden'
+                                textOverflow='ellipsis'
+                                maxWidth={columnWidthsPermission[0]}
                               >
                                 {row.name}
                               </Typography>
                               {row.owner && <Chip label='Owner' color='owner' />}
                             </Box>
                           </TableCell>
-                          {row.permissions.map((permission, colIndex) => (
+                          {row.permissions.map((permission: boolean, colIndex: number) => (
                             <TableCell key={colIndex} align='left' width={columnWidthsPermission[colIndex + 1]}>
                               <Checkbox
                                 checked={permission}
                                 onChange={() => handleCheckboxChange(rowIndex, colIndex)}
+                                disabled={row.owner}
                               />
                             </TableCell>
                           ))}
@@ -374,40 +377,6 @@ export function AccountIdView() {
                 </Box>
               </Box>
             </TableContainer>
-            {/* <Box padding='24px'>
-                <Table stickyHeader>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Name</TableCell>
-                      <TableCell>Create/Edit Role</TableCell>
-                      <TableCell>Add Staff In The Role</TableCell>
-                      <TableCell>Create/Edit Room</TableCell>
-                      <TableCell>Room</TableCell>
-                      <TableCell>Create/Edit Material</TableCell>
-                      <TableCell>Add Material In The Room</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {dataPermission.map((row, rowIndex) => (
-                      <TableRow key={rowIndex}>
-                        <TableCell>
-                          <Box display='flex' alignItems='center' gap='8px'>
-                            <Typography noWrap sx={{ textOverflow: 'ellipsis', overflow: 'hidden', maxWidth: '150px' }}>
-                              {row.name}
-                            </Typography>
-                            {row.owner && <Chip label='Owner' color='primary' />}
-                          </Box>
-                        </TableCell>
-                        {row.permissions.map((permission, colIndex) => (
-                          <TableCell key={colIndex} align='center'>
-                            <Checkbox checked={permission} onChange={() => handleCheckboxChange(rowIndex, colIndex)} />
-                          </TableCell>
-                        ))}
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </Box> */}
           </Box>
         </Box>
       )}

@@ -10,14 +10,14 @@ import { tooltip } from './tooltip';
 
 const themeOptions: ThemeOptions = {
   components: {
-    ...checkbox(),
     ...tooltip(),
     ...iconButton(),
     ...textField(),
     ...table(),
     ...pagination(),
     ...chip(),
-    ...loadingButton()
+    ...loadingButton(),
+    ...checkbox()
   }
 };
 
