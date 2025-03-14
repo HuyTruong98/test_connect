@@ -20,8 +20,8 @@ const themeOptions: ThemeOptions = {
     ...chip(),
     ...loadingButton(),
     ...checkbox(),
-    ...radio(),
-    ...card()
+    ...card(),
+    ...radio()
   }
 };
 

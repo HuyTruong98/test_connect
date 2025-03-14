@@ -566,89 +566,13 @@ export function AccountIdView() {
             >
               <FormControlLabel
                 value='clinicOwner'
-                control={
-                  <Radio
-                    disableRipple
-                    icon={
-                      <svg width='24' height='24' viewBox='0 0 24 24' fill='none'>
-                        <defs>
-                          <linearGradient id='radioBorderGradient' x1='0%' y1='0%' x2='100%' y2='0%'>
-                            <stop offset='0%' stopColor='#fe92ed' />
-                            <stop offset='33%' stopColor='#b39cf6' />
-                            <stop offset='66%' stopColor='#83a3f7' />
-                            <stop offset='100%' stopColor='#08a6fe' />
-                          </linearGradient>
-                        </defs>
-                        <circle cx='12' cy='12' r='8' stroke='url(#radioBorderGradient)' strokeWidth='2' fill='none' />
-                      </svg>
-                    }
-                    checkedIcon={
-                      <svg width='24' height='24' viewBox='0 0 24 24' fill='none'>
-                        <defs>
-                          <linearGradient id='radioBorderGradientChecked' x1='0%' y1='0%' x2='100%' y2='0%'>
-                            <stop offset='0%' stopColor='#fe92ed' />
-                            <stop offset='33%' stopColor='#b39cf6' />
-                            <stop offset='66%' stopColor='#83a3f7' />
-                            <stop offset='100%' stopColor='#08a6fe' />
-                          </linearGradient>
-                          <linearGradient id='radioFillGradient' x1='0%' y1='0%' x2='100%' y2='0%'>
-                            <stop offset='0%' stopColor='#fe92ed' />
-                            <stop offset='33%' stopColor='#b39cf6' />
-                            <stop offset='66%' stopColor='#83a3f7' />
-                            <stop offset='100%' stopColor='#08a6fe' />
-                          </linearGradient>
-                        </defs>
-                        <circle cx='12' cy='12' r='8' stroke='url(#radioBorderGradient)' strokeWidth='2' fill='none' />
-                        <circle cx='12' cy='12' r='6' fill='white' />
-                        <circle cx='12' cy='12' r='4' fill='url(#radioFillGradient)' />
-                      </svg>
-                    }
-                  />
-                }
+                control={<Radio disableRipple />}
                 sx={{ width: '50%', ml: '0px', fontWeight: 400, fontSize: '16px', mr: '0px', height: '100%' }}
                 label='Only Clinic Owner'
               />
               <FormControlLabel
                 value='clinicStaff'
-                control={
-                  <Radio
-                    disableRipple
-                    icon={
-                      <svg width='24' height='24' viewBox='0 0 24 24' fill='none'>
-                        <defs>
-                          <linearGradient id='radioBorderGradient' x1='0%' y1='0%' x2='100%' y2='0%'>
-                            <stop offset='0%' stopColor='#fe92ed' />
-                            <stop offset='33%' stopColor='#b39cf6' />
-                            <stop offset='66%' stopColor='#83a3f7' />
-                            <stop offset='100%' stopColor='#08a6fe' />
-                          </linearGradient>
-                        </defs>
-                        <circle cx='12' cy='12' r='8' stroke='url(#radioBorderGradient)' strokeWidth='2' fill='none' />
-                      </svg>
-                    }
-                    checkedIcon={
-                      <svg width='24' height='24' viewBox='0 0 24 24' fill='none'>
-                        <defs>
-                          <linearGradient id='radioBorderGradientChecked' x1='0%' y1='0%' x2='100%' y2='0%'>
-                            <stop offset='0%' stopColor='#fe92ed' />
-                            <stop offset='33%' stopColor='#b39cf6' />
-                            <stop offset='66%' stopColor='#83a3f7' />
-                            <stop offset='100%' stopColor='#08a6fe' />
-                          </linearGradient>
-                          <linearGradient id='radioFillGradient' x1='0%' y1='0%' x2='100%' y2='0%'>
-                            <stop offset='0%' stopColor='#fe92ed' />
-                            <stop offset='33%' stopColor='#b39cf6' />
-                            <stop offset='66%' stopColor='#83a3f7' />
-                            <stop offset='100%' stopColor='#08a6fe' />
-                          </linearGradient>
-                        </defs>
-                        <circle cx='12' cy='12' r='8' stroke='url(#radioBorderGradient)' strokeWidth='2' fill='none' />
-                        <circle cx='12' cy='12' r='6' fill='white' />
-                        <circle cx='12' cy='12' r='4' fill='url(#radioFillGradient)' />
-                      </svg>
-                    }
-                  />
-                }
+                control={<Radio disableRipple />}
                 label='All Clinic Staff'
                 sx={{ width: '50%', fontWeight: 400, fontSize: '16px', mr: '0px', height: '100%' }}
               />
